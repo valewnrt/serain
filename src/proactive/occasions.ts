@@ -5,7 +5,6 @@ import {
   OWN_EDIT_MARGIN_MS,
   PROACTIVE_HIGH_EXTRA_PER_DAY,
   PROACTIVE_MAX_PER_DAY,
-  TRAVEL_LEAD_MS,
 } from "../config/limits.js";
 import { owner } from "../config/owner.js";
 import { wrapUntrusted } from "../security/untrusted.js";
@@ -22,16 +21,21 @@ import { addDays, atWallTime, ownerDate, formatWallDay, formatWallTime, toWallTi
  * commitment out of a mail. Whatever of it goes into the prompt is therefore
  * in `wrapUntrusted`, and the occasion names its source so the turn gets the
  * taint (D8.4).
+ *
+ * **No travel occasion** (addendum D46 of 2026-10-14). "An event with a place
+ * starts soon" is in the owner's own calendar; without real data on the way
+ * there (traffic, cancellations) the code has nothing the owner does not know,
+ * and the model filled the gap with guesses from memory.
  */
 
 export type Priority = "high" | "normal";
 
-export type OccasionKind = "inbound" | "travel" | "deadline" | "calendar_change" | "collision";
+export type OccasionKind = "inbound" | "deadline" | "calendar_change" | "collision";
 
 export interface Occasion {
   /**
    * Stable key: `since:…` for occasions at the "since the last look" pointer,
-   * `travel:<id>`, `deadline:<id>`, `change:<id>` for remembered ones,
+   * `deadline:<id>`, `change:<id>` for remembered ones,
    * `collision:…` in the morning look.
    */
   key: string;
@@ -115,50 +119,6 @@ export function entryDay(entry: CalendarEntry): string {
 /** Does the event take place for the owner? Declined ones are in the calendar but do not count. */
 export function attending(entry: CalendarEntry): boolean {
   return !entry.declined && entry.status !== "cancelled";
-}
-
-// Words for places without a way there. Whole words, so that "Meetingraum" or
-// "Callenberg" pass as places; compounds with Telefon, Anruf and Video, on the
-// other hand, never need travel.
-const REMOTE_PLACE =
-  /\b(zoom|teams|meet|webex|skype|facetime|hangouts?|whereby|jitsi|discord|online|virtuell|remote|call|telefon\w*|anruf\w*|video\w*)\b/i;
-const URL_PLACE = /https?:\/\/|www\.|\b[a-z0-9-]+\.[a-z]{2,}\/\S/i;
-
-/**
- * Does this place need travel? Empty, a link or a video conference means no.
- * Everything else counts as a trip: a false alarm costs a look that usually
- * ends with `cancel_silently`; a missed trip costs the appointment.
- */
-export function needsTravel(location: string): boolean {
-  const place = location.trim();
-  if (!place) return false;
-  if (URL_PLACE.test(place)) return false;
-  return !REMOTE_PLACE.test(place);
-}
-
-/** Travel: an event with a place starts within the next 90 minutes. Once per event (`travelSeen`). */
-export function travelOccasions(
-  entries: readonly CalendarEntry[],
-  now: Date,
-  seen: Readonly<Record<string, string>>,
-): Occasion[] {
-  return entries.flatMap((entry) => {
-    const start = entryStart(entry);
-    if (!start || !attending(entry) || seen[entry.id] !== undefined) return [];
-    const lead = start.getTime() - now.getTime();
-    if (lead <= 0 || lead > TRAVEL_LEAD_MS || !needsTravel(entry.location)) return [];
-    return [
-      {
-        key: `travel:${entry.id}`,
-        kind: "travel" as const,
-        priority: "normal" as const,
-        text:
-          `An event with a place starts at ${clock(start)}, in ${Math.round(lead / 60_000)} minutes; ${owner.name} probably has to leave:\n` +
-          wrapUntrusted(`Title: ${clip(entry.title) || "(no title)"}\nPlace: ${clip(entry.location)}`, CALENDAR_SOURCE),
-        source: CALENDAR_SOURCE,
-      },
-    ];
-  });
 }
 
 /**
@@ -358,8 +318,8 @@ export interface GateResult {
  * they do not learn of it: an appointment that never arrived, a deadline
  * today, an event today or tomorrow that someone else moved, and in the
  * morning look a collision. Normal is what could be useful but usually turns
- * out fine without Serain too: travel (the owner knows their calendar), a
- * deadline tomorrow (a day remains), "the owner has written". In probation
+ * out fine without Serain too: a deadline tomorrow (a day remains), "the
+ * owner has written". In probation
  * only high gets through; at the cap, high may exceed it once.
  */
 export function gate(occasions: readonly Occasion[], context: { probation: boolean; sentToday: number }): GateResult {

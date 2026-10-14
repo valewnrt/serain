@@ -475,7 +475,7 @@ The `OutboundGate` counts what `channel.send` throws. Three failures in a row or
 <a id="d46"></a>
 ### D46: Proactive occasions and morning briefing
 
-The code finds the occasion (travel time before an appointment with a place, a deadline today or tomorrow, a change by others, a collision), the model almost always decides to stay silent. Calendar titles and places are foreign content and taint the turn. High priority passes probation and may exceed the daily cap once.
+The code finds the occasion (a deadline today or tomorrow, a change by others, a collision), the model almost always decides to stay silent. Calendar titles and places are foreign content and taint the turn. High priority passes probation and may exceed the daily cap once. *Addendum D46 of 2026-10-14:* no more travel occasion ("an event with a place starts within 90 minutes", in the morning look "before 10:00"). It only knew that the event has a place, which is in the owner's own calendar; the model filled the gap with guesses from memory about where the owner works that week, which the owner knows best. A way-there hint only comes back with real data on the way (traffic, cancellations) and only when it changes something.
 
 <a id="d47"></a>
 ### D47: Stable system prompt

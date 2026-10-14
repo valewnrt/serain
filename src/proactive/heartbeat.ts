@@ -35,7 +35,6 @@ import {
   pendingSince,
   type SnapshotEntry,
   taintOf,
-  travelOccasions,
 } from "./occasions.js";
 
 /**
@@ -52,9 +51,9 @@ import {
  * **Two cadences (V4).** "The owner has written" is looked at hourly.
  * Calendar and deadlines are read every ten minutes (`CALENDAR_POLL_MS`),
  * occasions are detected in code (`occasions.ts`), and a new hit gets a look
- * right away instead of waiting for the full hour: travel with 90 minutes of
- * lead time cannot take an hour of delay. On top of that, once a day, the
- * morning look (`morning.ts`).
+ * right away instead of waiting for the full hour: an event moved to the next
+ * hour cannot take an hour of delay. On top of that, once a day, the morning
+ * look (`morning.ts`).
  *
  * Not to be confused with `src/health/heartbeat.ts`: that is the process's
  * pulse for the watchdog (W11); this is about proactivity.
@@ -79,8 +78,10 @@ import {
  *   page (addenda D62 and D48 of 2026-10-10).
  * 7 (2026-10-14): prompts and occasion texts in English, the reply in the owner's
  *   language (language rework); content unchanged.
+ * 8 (2026-10-14): no more travel occasion, neither in the heartbeat nor in the
+ *   morning look (addendum D46 of 2026-10-14).
  */
-export const PROACTIVE_BEHAVIOR_VERSION = 7;
+export const PROACTIVE_BEHAVIOR_VERSION = 8;
 
 /** What a heartbeat turn has. The registry refuses everything else. */
 export const HEARTBEAT_TOOLS = ["send_message", "cancel_silently", "end_turn"] as const;
@@ -96,8 +97,6 @@ export interface HeartbeatState {
   /** Behavior version that ran last, and since when its probation counts (W12). */
   behaviorVersion: number | null;
   probationSince: string | null;
-  /** Events whose travel has been seen: id → start (for cleanup). */
-  travelSeen: Record<string, string>;
   /** Deadlines already seen: `mail_items.id` → how. */
   deadlinesSeen: Record<string, DeadlineSeen>;
   /** Last confirmed state of the events of the next days, for changes by others. */
@@ -113,7 +112,6 @@ export const EMPTY_HEARTBEAT_STATE: HeartbeatState = {
   sentCount: 0,
   behaviorVersion: null,
   probationSince: null,
-  travelSeen: {},
   deadlinesSeen: {},
   calendarSnapshot: {},
   morningDay: null,
@@ -131,7 +129,7 @@ export interface HeartbeatSignals {
   inboundSince(since: Date): Promise<number>;
   /**
    * Calendar in this range, without cancelled events. Null or missing means
-   * no calendar connected; then travel, event changes and the events in the
+   * no calendar connected; then event changes and the events in the
    * morning look are simply absent.
    */
   upcomingEvents?(from: Date, to: Date): Promise<CalendarEntry[] | null>;
@@ -254,13 +252,11 @@ export function heartbeatPrompt(occasions: readonly Occasion[]): string {
   ].join("\n");
 }
 
-/** Remembered things nobody needs anymore: travel to past events, deadlines from yesterday. */
+/** Remembered things nobody needs anymore: deadlines from yesterday. */
 export function pruneSeen(state: HeartbeatState, now: Date): HeartbeatState {
   const today = ownerDate(now);
-  const dayAgo = now.getTime() - 86_400_000;
   return {
     ...state,
-    travelSeen: Object.fromEntries(Object.entries(state.travelSeen).filter(([, start]) => new Date(start).getTime() >= dayAgo)),
     deadlinesSeen: Object.fromEntries(Object.entries(state.deadlinesSeen).filter(([, seen]) => seen.due >= today)),
   };
 }
@@ -512,7 +508,6 @@ export class ProactiveHeartbeat {
     return [
       ...changeOccasions(view.changes, state.calendarSnapshot, today),
       ...deadlineOccasions(view.dues, today, state.deadlinesSeen),
-      ...travelOccasions(view.events ?? [], now, state.travelSeen),
     ];
   }
 
@@ -522,8 +517,6 @@ export class ProactiveHeartbeat {
     if (keys.size === 0) return state;
     const view = this.view;
     const events = view?.events ?? [];
-    const travelSeen = { ...state.travelSeen };
-    for (const entry of events) if (keys.has(`travel:${entry.id}`)) travelSeen[entry.id] = entry.start;
     const deadlinesSeen = { ...state.deadlinesSeen };
     const today = ownerDate(now);
     for (const item of view?.dues ?? []) {
@@ -539,7 +532,6 @@ export class ProactiveHeartbeat {
     const changed = new Set(events.filter((entry) => keys.has(`change:${entry.id}`)).map((entry) => entry.id));
     return {
       ...state,
-      travelSeen,
       deadlinesSeen,
       calendarSnapshot: changed.size > 0 ? acknowledge(state.calendarSnapshot, events, changed, now) : state.calendarSnapshot,
     };
@@ -558,7 +550,6 @@ export class ProactiveHeartbeat {
       events: view?.events ?? null,
       calendarFailed: view?.calendarFailed ?? false,
       dues: view?.dues ?? [],
-      travelSeen: state.travelSeen,
       deadlinesSeen: state.deadlinesSeen,
       probation: inProbation(state, now),
       sentToday: sentToday(state, now),
@@ -588,7 +579,6 @@ export class ProactiveHeartbeat {
       ...(decision.run ? {} : { reason: decision.reason }),
       events: plan?.events.length ?? 0,
       collisions: plan?.collisions.length ?? 0,
-      travel: plan?.travel.length ?? 0,
       deadlines: plan?.deadlines.length ?? 0,
     });
     if (!decision.run) return { state: next, fired: false };

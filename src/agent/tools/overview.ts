@@ -110,7 +110,7 @@ function morningLine(outlook: MorningOutlook, now: Date): string {
       : "at 08:00, no calendar read";
   return (
     `- Morning look: ${when} (${why}), daily between 06:30 and 08:00, no end. ` +
-    "Only speaks up on an overlap, a deadline today or travel before 10:00, otherwise silent."
+    "Only speaks up on an overlap or a deadline today, otherwise silent."
   );
 }
 

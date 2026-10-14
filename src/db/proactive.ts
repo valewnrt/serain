@@ -56,7 +56,6 @@ export const heartbeatState: HeartbeatStateStore = {
       sentCount: typeof value.sentCount === "number" ? value.sentCount : EMPTY_HEARTBEAT_STATE.sentCount,
       behaviorVersion: typeof value.behaviorVersion === "number" ? value.behaviorVersion : null,
       probationSince: typeof value.probationSince === "string" ? value.probationSince : null,
-      travelSeen: entries(value.travelSeen, (entry): entry is string => typeof entry === "string"),
       deadlinesSeen: entries(value.deadlinesSeen, isDeadlineSeen),
       calendarSnapshot: entries(value.calendarSnapshot, isSnapshotEntry),
       morningDay: typeof value.morningDay === "string" ? value.morningDay : null,

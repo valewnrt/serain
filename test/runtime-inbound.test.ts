@@ -102,7 +102,6 @@ vi.mock("../src/db/proactive.js", () => ({
       sentCount: 0,
       behaviorVersion: 1,
       probationSince: null,
-      travelSeen: {},
       deadlinesSeen: {},
       calendarSnapshot: {},
       morningDay: null,

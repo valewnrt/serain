@@ -5,7 +5,6 @@ import {
   MORNING_LATEST,
   MORNING_LEAD_MS,
   MORNING_MAX_EVENTS,
-  MORNING_TRAVEL_BEFORE_HOUR,
   PROACTIVE_IDLE_MS,
 } from "../config/limits.js";
 import { owner } from "../config/owner.js";
@@ -24,7 +23,6 @@ import {
   entryStart,
   gate,
   MAIL_SOURCE,
-  needsTravel,
   type Occasion,
 } from "./occasions.js";
 
@@ -32,7 +30,7 @@ import {
  * Morning look (H3): once a day Serain looks at the owner's day before they
  * get going, and almost always decides not to disturb ("wakes up before
  * you"). Everything it needs for that is computed by the code: today's
- * events, overlaps, travel and deadlines. A model runs only if there is
+ * events, overlaps and deadlines. A model runs only if there is
  * something among them that changes the morning; otherwise there is just an
  * entry in the audit log. A daily "Good morning, here is your day" is exactly
  * what W12 forbids.
@@ -69,8 +67,6 @@ export interface MorningPlan {
   events: CalendarEntry[];
   /** Pairs of overlapping events with a time, as indexes into `events`. */
   collisions: Array<[number, number]>;
-  /** Events with travel before 10:00, as indexes into `events`. */
-  travel: number[];
   /** Commitments due today. */
   deadlines: DueCommitment[];
   occasions: Occasion[];
@@ -88,7 +84,6 @@ export function morningPlan(input: {
   now: Date;
   events: readonly CalendarEntry[];
   dues: readonly DueCommitment[];
-  travelSeen: Readonly<Record<string, string>>;
   deadlinesSeen: Readonly<Record<string, DeadlineSeen>>;
 }): MorningPlan {
   const today = ownerDate(input.now);
@@ -114,23 +109,6 @@ export function morningPlan(input: {
     });
   }
 
-  const travelBefore = atWallTime(today, MORNING_TRAVEL_BEFORE_HOUR, 0).getTime();
-  const travel = events.flatMap((entry, index) => {
-    const start = entryStart(entry);
-    if (!start || start.getTime() <= input.now.getTime() || start.getTime() >= travelBefore) return [];
-    return needsTravel(entry.location) && input.travelSeen[entry.id] === undefined ? [index] : [];
-  });
-  for (const index of travel) {
-    const entry = events[index] as CalendarEntry;
-    occasions.push({
-      key: `travel:${entry.id}`,
-      kind: "travel",
-      priority: "normal",
-      text: `${owner.name} probably has to travel to event ${index + 1} at ${clock(entryStart(entry) as Date)}.`,
-      source: CALENDAR_SOURCE,
-    });
-  }
-
   // Due today, and never shown: whoever read "due tomorrow" yesterday knows it.
   const deadlines = input.dues.filter((item) => item.due === today);
   deadlines.forEach((item, index) => {
@@ -144,7 +122,7 @@ export function morningPlan(input: {
     });
   });
 
-  return { events, collisions, travel, deadlines, occasions };
+  return { events, collisions, deadlines, occasions };
 }
 
 export type MorningWait = "done" | "not_yet" | "calendar_unavailable" | "paused" | "in_conversation";
@@ -171,7 +149,6 @@ export function decideMorning(input: {
   /** Calendar connected but currently unreadable: then wait, do not decide without it. */
   calendarFailed: boolean;
   dues: readonly DueCommitment[];
-  travelSeen: Readonly<Record<string, string>>;
   deadlinesSeen: Readonly<Record<string, DeadlineSeen>>;
   probation: boolean;
   sentToday: number;
@@ -194,7 +171,6 @@ export function decideMorning(input: {
     now,
     events: input.events ?? [],
     dues: input.dues,
-    travelSeen: input.travelSeen,
     deadlinesSeen: input.deadlinesSeen,
   });
   if (plan.occasions.length === 0) return { final: true, run: false, reason: "nothing", seen: [], plan };

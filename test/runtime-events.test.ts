@@ -190,9 +190,8 @@ vi.mock("../src/db/proactive.js", () => ({
       sentDay: null,
       sentCount: 0,
       // The current version: otherwise a probation would start at the first tick (D26).
-      behaviorVersion: 7,
+      behaviorVersion: (await import("../src/proactive/heartbeat.js")).PROACTIVE_BEHAVIOR_VERSION,
       probationSince: null,
-      travelSeen: {},
       deadlinesSeen: {},
       calendarSnapshot: {},
       // The morning look is done for today (H3).

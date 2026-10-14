@@ -877,7 +877,7 @@ export const KNOWN_SENDER_CHECK_MAX = 10;
  *
  * The calendar is read at most every ten minutes on the scheduler's clock (one
  * request, seven days), in between the heartbeat computes on the cached state.
- * Ten minutes of delay do not matter with 90 minutes of lead time, and 144
+ * Ten minutes of delay do not matter for a moved event or a deadline, and 144
  * requests a day are far below Google's quota.
  */
 export const CALENDAR_POLL_MS = 10 * 60_000;
@@ -887,7 +887,7 @@ export const CALENDAR_POLL_MS = 10 * 60_000;
  * yesterday knows no event that has been moved or cancelled since.
  */
 export const BUSY_VIEW_MAX_AGE_MS = 60 * 60_000;
-/** This far ahead events count as an occasion (travel, change) and for the snapshot. */
+/** This far ahead events count as an occasion (change) and for the snapshot. */
 export const CALENDAR_LOOKAHEAD_DAYS = 7;
 /**
  * Events with a location that the chat sees as a reference in the `<context>`
@@ -897,8 +897,6 @@ export const CALENDAR_LOOKAHEAD_DAYS = 7;
 export const CALENDAR_REFS_MAX = 12;
 /** This long the location of an event that goes to the executor may be; longer is no location anymore. */
 export const CALENDAR_REF_LOCATION_MAX_CHARS = 200;
-/** Lead time for "you need to leave": an event with a location that begins within this time. */
-export const TRAVEL_LEAD_MS = 90 * 60_000;
 /**
  * High priority may exceed the daily cap once. A missed deadline or an event
  * that is suddenly an hour earlier tomorrow morning should not fail because an
@@ -919,14 +917,12 @@ export const OWN_EDIT_MARGIN_MS = 5 * 60_000;
  * Morning briefing: 30 min before the first event with a time, not before
  * 06:30, not after 08:00, without an event at 08:00. After 10:00 it is no
  * morning briefing anymore: if the process was gone in the morning, it is
- * skipped for the day instead of being made up at noon. Travel only counts until
- * 10:00, later the heartbeat takes over with its 90 minutes of lead time.
+ * skipped for the day instead of being made up at noon.
  */
 export const MORNING_LEAD_MS = 30 * 60_000;
 export const MORNING_EARLIEST = { hour: 6, minute: 30 } as const;
 export const MORNING_LATEST = { hour: 8, minute: 0 } as const;
 export const MORNING_EXPIRES_HOUR = 10;
-export const MORNING_TRAVEL_BEFORE_HOUR = 10;
 /** This many events of the day the model sees in the morning briefing; titles and locations truncated. */
 export const MORNING_MAX_EVENTS = 12;
 export const OCCASION_TEXT_MAX_CHARS = 120;
