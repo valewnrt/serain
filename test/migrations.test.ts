@@ -1415,7 +1415,8 @@ describe("files in the vault (0022, addendum to D49)", () => {
     expect(await put("klein", 1)).toEqual([{ status: "too_big" }]);
     expect(await put("gross0", 10 * 1024 * 1024 - 1)).toEqual([{ status: "ok" }]);
     expect(await put("klein", 1)).toEqual([{ status: "ok" }]);
-  }, 30_000);
+    // Over 100 MB through PGlite: about 11 s locally, 23 s and more on a shared CI runner.
+  }, 120_000);
 
   it("shows storing, deleting and every opening by Serain in the audit under security, the listing not", async () => {
     await q(`insert into public.audit_log (event, detail) values
