@@ -1,0 +1,63 @@
+# Serain web interface (D49). Template: `pnpm web vault-key` or `pnpm web:setup` create
+# web/wrangler.toml from it (gitignored) and fill in the values. Copying by hand works too:
+#   cp web/wrangler.toml.example web/wrangler.toml
+# Local: `pnpm web:dev`. On Cloudflare: [env.production], `pnpm web:deploy`.
+name = "serain-web"
+main = "src/worker.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+# No preview URLs on workers.dev: any address other than your own domain would bypass Access.
+preview_urls = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# Every request goes through the Worker first: it sets the security headers, on static files too.
+run_worker_first = true
+not_found_handling = "single-page-application"
+
+[vars]
+WEB_ORIGIN = "http://localhost:8787"
+RP_ID = "localhost"
+# The server's public key for the vault (P-256, raw, base64url). Not a secret, but whoever
+# replaces it could read new entries. Set by `pnpm web vault-key`; if empty, the Worker
+# responds with 503.
+VAULT_PUBLIC_KEY = ""
+# IANA time zone for dates in the audit, like OWNER_TIMEZONE in .dev.vars. Set by `pnpm web vault-key`.
+OWNER_TIMEZONE = ""
+
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Your own domain (D49). Set up by `pnpm web:setup` (Hyperdrive, Access, domain from
+# SERAIN_WEB_ORIGIN), deployed with `pnpm web:deploy`. An environment does not inherit bindings
+# and vars, so everything is repeated here.
+[env.production]
+name = "serain-web"
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "serain.example.com", custom_domain = true }]
+
+[env.production.assets]
+directory = "./dist"
+binding = "ASSETS"
+run_worker_first = true
+not_found_handling = "single-page-application"
+
+[env.production.vars]
+WEB_ORIGIN = "https://serain.example.com"
+RP_ID = "serain.example.com"
+VAULT_PUBLIC_KEY = ""
+OWNER_TIMEZONE = ""
+# Access application in front of the domain (web/src/access.ts). Not a secret; without both values
+# the Worker responds with 503. Team e.g. "myteam.cloudflareaccess.com", AUD 64 hex characters.
+ACCESS_TEAM_DOMAIN = ""
+ACCESS_AUD = ""
+
+# Postgres as serain_web via Hyperdrive, TLS verify-full against the Supabase CA, no cache.
+# `pnpm web:setup` fills in the ID.
+[[env.production.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "00000000000000000000000000000000"

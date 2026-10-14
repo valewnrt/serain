@@ -1,0 +1,490 @@
+[
+ {
+  "id": "code-eigene-anmeldung",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Beispieldienst <noreply@accounts.example.com>",
+  "subject": "Dein Anmeldecode: 482913",
+  "text": "Hallo,\n\nhier ist dein Code für die Anmeldung: 482913. Er ist 10 Minuten gültig.\n\nWenn du das nicht angefordert hast, kannst du diese Mail ignorieren.",
+  "note": "Code for a sign-in Alex is doing themselves. The old rules reported such mails live as urgent."
+ },
+ {
+  "id": "code-zugang-web",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Cloud <noreply@notify.cloud.example>",
+  "subject": "Access login code for example.com",
+  "text": "Here is your one-time login code: 771204\n\nThis code expires in 10 minutes. If you didn't request it, ignore this email."
+ },
+ {
+  "id": "bestaetigungslink-registrierung",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Speicher <getstarted@storage.example>",
+  "subject": "[Verify email] Complete your account setup",
+  "text": "Welcome! Please verify your email address to finish setting up your account.\n\nVerify email: https://storage.example/verify?t=abc\n\nThis link expires in 24 hours."
+ },
+ {
+  "id": "anmeldehinweis-normal",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Speicher Notifications <info@storage.example>",
+  "subject": "Account Login Notification",
+  "text": "Someone (hopefully you) just logged in to your account.\n\nSign In Details: Chrome on macOS, 2026-10-07T09:00:00Z, Musterstadt, Germany\n\nIf you recognize this activity, you can ignore this message.",
+  "note": "Ordinary sign-in notice with no suspicion from the service."
+ },
+ {
+  "id": "passwort-zuruecksetzen-link",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Spieleplattform <noreply@accounts.games.example>",
+  "subject": "Anfrage für eine Änderung deines Passworts",
+  "text": "Wir haben eine Anfrage für eine Passwortänderung deines Kontos erhalten. Dieser Link läuft in 24 Stunden ab: https://games.example/reset?t=x\n\nFalls du keine Passwortänderung angefordert hast, kannst du diese Mail ignorieren.",
+  "note": "Reset link, nothing has been changed."
+ },
+ {
+  "id": "app-verknuepft",
+  "expected": "wichtig",
+  "mailbox": "secondary",
+  "from": "Konto <no-reply@accounts.example.com>",
+  "subject": "Sie haben einer App Zugriff gewährt",
+  "text": "Sie haben Beispiel-App Zugriff auf einige Ihrer Kontodaten gewährt.\n\nWenn Sie das nicht waren, prüfen Sie Ihre Kontoaktivitäten.",
+  "note": "New access to the account: important, even if Alex probably set it up themselves (decision of 2026-10-08)."
+ },
+ {
+  "id": "beleg-paypal",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Bezahldienst <service@pay.example>",
+  "subject": "Beleg für Ihre Zahlung an Musikdienst AB",
+  "text": "Sie haben 10,99 EUR an Musikdienst AB gezahlt.\n\nTransaktionscode: 1AB23456CD\n\nDiese Zahlung erscheint auf Ihrem Kontoauszug."
+ },
+ {
+  "id": "rechnung-hosting",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Billing <noreply@hosting.example>",
+  "subject": "Rechnung 0890012 für September",
+  "text": "Guten Tag,\n\nanbei Ihre Rechnung für September über 4,51 EUR. Der Betrag wird per Lastschrift eingezogen.\n\nIhr Hosting-Team"
+ },
+ {
+  "id": "versand",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Shop <versand@shop.example>",
+  "subject": "Deine Bestellung ist unterwegs",
+  "text": "Gute Nachrichten! Deine Bestellung 4711 wurde verschickt und kommt voraussichtlich am Donnerstag.\n\nSendung verfolgen: https://shop.example/track"
+ },
+ {
+  "id": "ci-fehler",
+  "expected": "unwichtig",
+  "mailbox": "secondary",
+  "from": "Code-Hoster <notifications@code.example>",
+  "subject": "[alex/website] Run failed: ci - main (8ed5680)",
+  "text": "Run failed for main (8ed5680)\n\nci: 1 failed job\n\nView workflow run: https://code.example/alex/website/actions/runs/1"
+ },
+ {
+  "id": "absturzbericht",
+  "expected": "unwichtig",
+  "mailbox": "secondary",
+  "from": "Fehlerdienst <noreply@errors.example>",
+  "subject": "GROSCHEN-7K - Fatal App Hang Fully Blocked",
+  "text": "New issue in groschen (production)\n\nApp Hang Fully Blocked: The user or the OS watchdog terminated the app while it was blocked.\n\nEvents: 1, Users: 1",
+  "note": "Notification from a development tool, even if it is about the owner's own app."
+ },
+ {
+  "id": "testflight",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Musterfirma UG (haftungsbeschränkt) via TestFlight <no_reply@email.apple.com>",
+  "subject": "Haushaltsbuch – Groschen 1.4.3 (205) for iOS is now available to test.",
+  "text": "Groschen 1.4.3 (205) for iOS is now available to test in TestFlight.\n\nTo test this app, open TestFlight on your iPhone.",
+  "note": "Status notice about a build, nothing that concerns the company as such."
+ },
+ {
+  "id": "review-fertig",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "App Store Connect <no_reply@email.apple.com>",
+  "subject": "Review of your Groschen (iOS) submission is complete",
+  "text": "Your submission has been reviewed and approved. Your app will be released according to your release settings."
+ },
+ {
+  "id": "verlaengerung-automatisch",
+  "expected": "unwichtig",
+  "mailbox": "secondary",
+  "from": "Registrar <registrar@registrar.example>",
+  "subject": "30 Day Renewal Reminder",
+  "text": "Your domain example-shop.com will automatically renew on 06-11-2026 using the card on file. No action is needed."
+ },
+ {
+  "id": "social-kontaktanfrage",
+  "expected": "unwichtig",
+  "mailbox": "secondary",
+  "from": "\"Max Muster (über Netzwerk)\" <messages-noreply@network.example>",
+  "subject": "Ich möchte mich gerne mit Ihnen vernetzen",
+  "text": "Max Muster möchte sich mit Ihnen vernetzen.\n\nAnnehmen | Ignorieren"
+ },
+ {
+  "id": "social-aktivitaet",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Laufapp <mail@update.run.example>",
+  "subject": "Jemand hat sich deinen Local-Legend-Titel geschnappt",
+  "text": "Weg ist er! Jemand hat sich deinen Local-Legend-Titel auf dem Segment Seeufer geschnappt. Hol ihn dir zurück!"
+ },
+ {
+  "id": "newsletter",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "This Week <info@startup.example>",
+  "subject": "The State of Startups in 2026",
+  "text": "This week: what founders learned from 400 companies, and why the harness matters more than the model."
+ },
+ {
+  "id": "werbedruck-deaktivierung",
+  "expected": "unwichtig",
+  "mailbox": "secondary",
+  "from": "CRM-Dienst <noreply@notifications.crm.example>",
+  "subject": "Ihr kostenloser Account wird in 1 Tag deaktiviert",
+  "text": "Ihr kostenloser Account wird morgen wegen Inaktivität deaktiviert. Melden Sie sich jetzt an oder upgraden Sie auf Pro, um alle Daten zu behalten!",
+  "note": "Pressure to win Alex back."
+ },
+ {
+  "id": "werbedruck-letzte-chance",
+  "expected": "unwichtig",
+  "mailbox": "secondary",
+  "from": "Mode <news@shop.example>",
+  "subject": "LETZTE CHANCE: -20 % nur noch heute!",
+  "text": "Nur noch heute: 20 % auf deinen gesamten Einkauf. Handle jetzt, bevor es zu spät ist!"
+ },
+ {
+  "id": "werbung-als-antwort",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Gewinnspiel <win@mail.contest.example>",
+  "subject": "Re: Aw: Re: One honest request (and a deal you'll actually like)",
+  "text": "Hi Alex, just following up on my last email! We'd love for you to try our app. Reply YES to claim your free iPhone entry.",
+  "note": "Advertising that looks like a reply."
+ },
+ {
+  "id": "kaltakquise",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Joy Example <sales@factory.example>",
+  "subject": "Re: Smart Band – OEM/ODM Partnership & Engineering Sample Inquiry",
+  "text": "Dear Sir, we are a leading manufacturer of smart bands. Following up on our partnership proposal, may we send you an engineering sample? Please reply at your earliest convenience.",
+  "note": "Unsolicited inquiry from a stranger who wants to sell something."
+ },
+ {
+  "id": "werbung-frist-steuer",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Geschäftskonto <service@customer.bank.example>",
+  "subject": "Noch 10 Tage bis zur UStVA-Frist – so erledigst du sie in Minuten",
+  "text": "Exklusiv für Kunden: Buchhaltung 3 Monate kostenlos nutzen. Die nächste Umsatzsteuer-Voranmeldung ist am 10. fällig. Mit unserem Steuertool erledigst du sie in Minuten!",
+  "note": "Advertising for a product that works with a deadline."
+ },
+ {
+  "id": "verdaechtige-anmeldung",
+  "expected": "wichtig",
+  "mailbox": "secondary",
+  "from": "Konto <no-reply@accounts.example.com>",
+  "subject": "Kritische Sicherheitswarnung",
+  "text": "Wir haben einen Anmeldeversuch bei Ihrem Konto aus Vietnam blockiert. Jemand kennt möglicherweise Ihr Passwort. Ändern Sie es jetzt."
+ },
+ {
+  "id": "passwort-geaendert",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Spieleplattform <noreply@accounts.games.example>",
+  "subject": "Dein Passwort wurde geändert",
+  "text": "Das Passwort für dein Konto wurde soeben geändert. Wenn du das nicht warst, setze es sofort zurück und kontaktiere den Support.",
+  "note": "Password change that Alex did not request."
+ },
+ {
+  "id": "betrug",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Bank <info@bank.example>",
+  "subject": "Verdächtige Kartenzahlung",
+  "text": "Wir haben eine ungewöhnliche Zahlung über 899,00 EUR bei ELEKTRO-ONLINE mit Ihrer Karte festgestellt und die Karte vorläufig gesperrt. Bitte bestätigen Sie in der App, ob Sie das waren."
+ },
+ {
+  "id": "zahlung-fehlgeschlagen",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Cloud Billing <billing@cloud.example>",
+  "subject": "Payment failed for your subscription",
+  "text": "We couldn't charge your card ending in 4242 for your Pro plan. Please update your payment method within 7 days to avoid service interruption."
+ },
+ {
+  "id": "konto-eingeschraenkt",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Bank-App <no-reply@neobank.example>",
+  "subject": "Dein Konto kann eingeschränkt werden",
+  "text": "Die Dokumente zu deiner Identifizierung sind abgelaufen. Lade bis 21. Dezember 2026 neue Ausweisdokumente hoch, um Kontobeschränkungen zu vermeiden."
+ },
+ {
+  "id": "dienst-gedrosselt",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Datenbank <noreply@db.example>",
+  "subject": "Restrictions are applied to your org",
+  "text": "Your organization has consumed its quota for this billing cycle. Requests to your projects are dropped until your quota refills on October 22.",
+  "note": "A service that has just been shut off."
+ },
+ {
+  "id": "flug-geaendert",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Fluglinie <noreply@airline.example>",
+  "subject": "Änderung Ihres Fluges HAM–LIS",
+  "text": "Ihr Flug XY1234 am 24.10. wurde annulliert. Wir haben Sie auf XY1240 um 18:40 umgebucht. Bitte bestätigen Sie die neue Verbindung oder wählen Sie eine Alternative."
+ },
+ {
+  "id": "krankenkasse-frist",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Krankenkasse <postfach@kasse.example>",
+  "subject": "Wir brauchen noch Unterlagen von Ihnen",
+  "text": "Für Ihre Familienversicherung fehlt noch die Immatrikulationsbescheinigung. Bitte reichen Sie sie bis zum 31.10. ein, sonst endet die Versicherung zum Monatsende."
+ },
+ {
+  "id": "hochschule-frist",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Studienbüro <studienbuero@hs.example>",
+  "subject": "Rückmeldung zum Wintersemester",
+  "text": "Bitte überweisen Sie den Semesterbeitrag bis zum 15.11. Ohne fristgerechte Zahlung wird die Exmatrikulation eingeleitet."
+ },
+ {
+  "id": "app-abgelehnt",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "App Store Connect <no_reply@email.apple.com>",
+  "subject": "Guideline 3.1.1 – Your submission was rejected",
+  "text": "We noticed an issue with your Groschen submission. Your app uses a payment mechanism other than in-app purchase. Please revise and resubmit.",
+  "note": "The owner's own app, rejected."
+ },
+ {
+  "id": "build-zurueckgewiesen",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "App Store Connect <no_reply@email.apple.com>",
+  "subject": "Action needed: The uploaded build for Groschen has one or more issues.",
+  "text": "We noticed one or more issues with a recent submission for App Store review. Please correct the following issues and upload a new binary to App Store Connect.\n\nITMS-91064: Invalid tracking information in PrivacyInfo.xcprivacy.",
+  "note": "Build that Apple rejects."
+ },
+ {
+  "id": "freund-termin",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Anna Beispiel <anna@example.org>",
+  "subject": "Freitag?",
+  "text": "hey, passt dir Freitag um 10 zum Kaffee? sonst nächste Woche"
+ },
+ {
+  "id": "freund-frage",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Ben Muster <ben@example.org>",
+  "subject": "Kurze Frage",
+  "text": "Hi Alex, hast du noch die Fotos vom Wochenende? Bräuchte sie bis heute Abend für die Karte."
+ },
+ {
+  "id": "termin-geaendert",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Praxis Beispiel <praxis@example.org>",
+  "subject": "Terminänderung",
+  "text": "Guten Tag, leider müssen wir Ihren Termin am Freitag, 10 Uhr, auf Montag, 14 Uhr, verschieben.",
+  "known": [
+   {
+    "key": "item:1",
+    "what": "Zahnarzttermin",
+    "when": "Freitag, 10 Uhr",
+    "from": "Praxis Beispiel"
+   }
+  ]
+ },
+ {
+  "id": "app-kunde-support",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Lea Kundin <lea.k@example.net>",
+  "subject": "Abo gekündigt aber trotzdem abgebucht",
+  "text": "Hallo, ich habe mein Groschen-Abo letzte Woche gekündigt, wurde aber trotzdem belastet. Können Sie mir das Geld zurückerstatten?",
+  "note": "A customer of the owner's own app wants their money back: waiting for an answer."
+ },
+ {
+  "id": "app-kunde-feedback",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Tom Nutzer <tom@example.net>",
+  "subject": "Feedback zu Groschen",
+  "text": "Hey, ich nutze Groschen seit zwei Monaten und liebe es. Wäre es möglich, Sparziele anzulegen? Würde dafür auch mehr zahlen.",
+  "note": "A user of the owner's own app, no deadline, but with a question for Alex: they are waiting for an answer."
+ },
+ {
+  "id": "firma-steuerberatung",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Christiane Beispiel <c.beispiel@steuer.example>",
+  "subject": "AW: Musterfirma UG – Umsatzsteuer-Voranmeldung",
+  "text": "Hallo Herr Sommer, anbei der Entwurf für die Umsatzsteuer-Voranmeldung. Können Sie mir bis Ende der Woche noch die Belege für September schicken?"
+ },
+ {
+  "id": "firma-anwalt",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Kanzlei Beispiel <info@kanzlei.example>",
+  "subject": "WG: 123/26 Musterfirma UG / Mietsache",
+  "text": "Sehr geehrter Herr Sommer, zur Kenntnis übersenden wir das Schreiben der Gegenseite. Bitte bestätigen Sie kurz den Eingang."
+ },
+ {
+  "id": "nebenpostfach-mensch",
+  "expected": "wichtig",
+  "mailbox": "secondary",
+  "from": "Clara Beispiel <clara@example.org>",
+  "subject": "Wohnung",
+  "text": "Hi Alex, die Besichtigung wäre am Mittwoch um 17 Uhr. Gibst du mir bis morgen Bescheid, ob du kommst?"
+ },
+ {
+  "id": "einladung-ohne-text",
+  "expected": "wichtig",
+  "mailbox": "main",
+  "from": "Helga Beispiel <h.beispiel@firma.example>",
+  "subject": "Onboarding A. Sommer",
+  "text": "",
+  "attachments": [
+   "Kalendereinladung.ics"
+  ],
+  "note": "Outlook invitation: empty text, the event is in the attachment. Without attachment names judge saw an empty mail."
+ },
+ {
+  "id": "rechnung-als-pdf",
+  "expected": "unwichtig",
+  "mailbox": "main",
+  "from": "Billing <noreply@hosting.example>",
+  "subject": "Ihre Rechnung",
+  "text": "Anbei Ihre Rechnung. Der Betrag wird abgebucht.",
+  "attachments": [
+   "Rechnung-0890012.pdf"
+  ],
+  "note": "An attachment alone makes nothing important."
+ },
+ {
+  "id": "fund-bahn-buchung",
+  "expected": "unwichtig",
+  "automated": true,
+  "finding": "booking",
+  "from": "Bahnreisen <buchung@bahn.example>",
+  "subject": "Ihre Buchungsbestätigung (Auftrag 4711)",
+  "text": "Vielen Dank für Ihre Buchung.\n\nHinfahrt: Fr, 16.10.2026\nHamburg Hbf ab 07:12, Gleis 7\nBerlin Hbf an 11:20\nICE 597, Wagen 24, Platz 51\n\nIhr Ticket finden Sie im Anhang.",
+  "attachments": [
+   "Ticket_4711.pdf"
+  ],
+  "note": "Finding: a train that is not in the calendar."
+ },
+ {
+  "id": "fund-flug-buchung",
+  "expected": "unwichtig",
+  "bulk": true,
+  "finding": "booking",
+  "from": "Airline <noreply@fly.example>",
+  "subject": "Booking confirmation LIS – your trip on 14 Nov",
+  "text": "Your booking is confirmed.\n\nHAM → LIS, 14 Nov 2026, departs 09:40, arrives 11:55\nLIS → HAM, 17 Nov 2026, departs 18:10, arrives 22:15\n\nOnline check-in opens 24 hours before departure.\n\nUnsubscribe from offers"
+ },
+ {
+  "id": "fund-arzt-termin",
+  "expected": "unwichtig",
+  "automated": true,
+  "finding": "booking",
+  "from": "Terminportal <no-reply@termine.example>",
+  "subject": "Terminbestätigung: Praxis Dr. Beispiel",
+  "text": "Ihr Termin ist bestätigt.\n\nDienstag, 20.10.2026 um 09:30 Uhr\nPraxis Dr. Beispiel, Hauptstraße 1, 12345 Musterstadt\n\nBitte bringen Sie Ihre Versichertenkarte mit."
+ },
+ {
+  "id": "fund-konzert-ticket",
+  "expected": "unwichtig",
+  "automated": true,
+  "finding": "booking",
+  "from": "Ticketshop <tickets@shop.example>",
+  "subject": "Deine Tickets für Beispielband",
+  "text": "Danke für deine Bestellung!\n\nBeispielband – Tour 2026\nSa, 07.11.2026, Einlass 19:00, Beginn 20:00\nStadthalle Musterstadt\n\n2 Tickets im Anhang."
+ },
+ {
+  "id": "fund-hotel",
+  "expected": "unwichtig",
+  "bulk": true,
+  "finding": "booking",
+  "from": "Unterkünfte <noreply@stays.example>",
+  "subject": "Ihre Reservierung ist bestätigt",
+  "text": "Hotel Beispiel Lissabon\nCheck-in: Sa, 14.11.2026 ab 15:00\nCheck-out: Di, 17.11.2026 bis 11:00\n3 Nächte, 1 Zimmer\n\nAbmelden"
+ },
+ {
+  "id": "fund-packstation",
+  "expected": "unwichtig",
+  "automated": true,
+  "finding": "lapse",
+  "from": "Paketdienst <noreply@paket.example>",
+  "subject": "Ihre Sendung liegt in der Packstation 123",
+  "text": "Ihre Sendung wurde in die Packstation 123, Bahnhofstraße, Musterstadt gelegt.\n\nSie können sie bis Donnerstag, 15.10.2026 abholen. Danach geht sie zurück an den Absender."
+ },
+ {
+  "id": "fund-probeabo",
+  "expected": "unwichtig",
+  "automated": true,
+  "finding": "lapse",
+  "from": "Streamingdienst <info@stream.example>",
+  "subject": "Deine Testphase endet bald",
+  "text": "Hallo,\n\ndeine kostenlose Testphase endet am 19.10.2026. Danach kostet dein Abo 12,99 € im Monat. Wenn du nicht weitermachen willst, kündige vorher in deinem Konto."
+ },
+ {
+  "id": "fund-rueckgabe",
+  "expected": "unwichtig",
+  "bulk": true,
+  "finding": "lapse",
+  "from": "Modeshop <service@mode.example>",
+  "subject": "Deine Bestellung ist angekommen",
+  "text": "Deine Bestellung 88213 wurde zugestellt.\n\nPasst etwas nicht? Rücksendung kostenlos bis 09.11.2026.\n\nNewsletter abbestellen"
+ },
+ {
+  "id": "fund-werbung-gutschein",
+  "expected": "unwichtig",
+  "bulk": true,
+  "finding": "none",
+  "from": "Shop <news@shop.example>",
+  "subject": "Nur bis Sonntag: 20 € Gutschein für alle",
+  "text": "Mit dem Code HERBST20 sparst du 20 € auf alles. Gültig bis 18.10.2026. Jetzt shoppen!\n\nAbmelden"
+ },
+ {
+  "id": "fund-veranstaltungs-newsletter",
+  "expected": "unwichtig",
+  "bulk": true,
+  "finding": "none",
+  "from": "Kulturhaus <newsletter@kultur.example>",
+  "subject": "Unsere Veranstaltungen im November",
+  "text": "Konzerte, Lesungen, Kino: das Programm für November. Tickets ab sofort im Vorverkauf.\n\nAbmelden"
+ },
+ {
+  "id": "fund-versand-ohne-datum",
+  "expected": "unwichtig",
+  "automated": true,
+  "finding": "none",
+  "from": "Paketdienst <noreply@paket.example>",
+  "subject": "Ihre Sendung ist unterwegs",
+  "text": "Ihre Sendung ist im Paketzentrum angekommen und wird bald zugestellt. Den aktuellen Status sehen Sie in der Sendungsverfolgung. Abholung nicht nötig."
+ },
+ {
+  "id": "fund-webinar-werbung",
+  "expected": "unwichtig",
+  "bulk": true,
+  "finding": "none",
+  "from": "SaaS <events@saas.example>",
+  "subject": "Webinar am 22.10.: KI im Vertrieb",
+  "text": "Melde dich jetzt an für unser kostenloses Webinar am 22.10.2026 um 16:00. Plätze begrenzt!\n\nAbmelden"
+ }
+]

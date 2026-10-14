@@ -1,0 +1,11 @@
+[Unit]
+Description=Serain watchdog every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Unit=serain-watchdog.service
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

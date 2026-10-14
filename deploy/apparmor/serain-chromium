@@ -1,0 +1,19 @@
+# Chromium for `web_browse` (D35) may create user namespaces, nothing else.
+#
+# Ubuntu 24.04 blocks unprivileged user namespaces via AppArmor
+# (kernel.apparmor_restrict_unprivileged_userns=1). Chrome's sandbox needs them;
+# without this profile Chromium crashes under the service's hardening, and the
+# only other way would be --no-sandbox. Google's Chrome package installs exactly
+# such a profile for /opt/google/chrome/chrome; there is no Google Chrome for ARM,
+# so the same is done for the Chromium from playwright-core.
+#
+# Lives root-owned in /etc/apparmor.d, transferred by deploy.sh directly from your own computer,
+# never via /opt/serain (the service may write there).
+
+abi <abi/4.0>,
+include <tunables/global>
+
+profile serain-chromium /opt/serain-browsers/chromium-*/chrome-linux*/chrome flags=(unconfined) {
+  userns,
+  include if exists <local/serain-chromium>
+}

@@ -1,0 +1,81 @@
+# Connector submissions from serain.si/connectors/submit (D65). The form there prefills the text
+# fields whose ids match its input names (`SUBMIT_FIELDS` in site/content/render.ts; test/site.test.ts
+# keeps both in step); GitHub prefills no dropdowns or checkboxes. Accepted connectors are listed in
+# site/content/community.ts.
+name: Connector
+description: Submit a connector for a service, or suggest one
+labels: ["connector"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A connector is one catalog entry and one driver (D51 in docs/ARCHITECTURE.md, guide in docs/INSTANCE.md). Tools, levels and descriptions are written by us, never taken from the provider. Connectors only **read** or **write reversibly**: nothing that sends, deletes or pays.
+
+        Never paste tokens, passwords, API keys, phone numbers, addresses or real messages here. Security problems go through SECURITY.md, not an issue.
+  - type: input
+    id: website
+    attributes:
+      label: Website of the service
+      placeholder: https://
+    validations:
+      required: true
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      options:
+        - Built, the code is linked below
+        - An idea, not built yet
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Repository with your code
+      description: The catalog entry and the driver, in the shape of an instance (docs/INSTANCE.md). Empty for an idea.
+      placeholder: https://github.com/you/serain-connector-example
+  - type: textarea
+    id: summary
+    attributes:
+      label: What Serain can do with it
+      description: One or two sentences, as they would appear on serain.si/connectors.
+    validations:
+      required: true
+  - type: textarea
+    id: tools
+    attributes:
+      label: Tools
+      description: "One per line: name, what it does for the owner, level (read or write_reversible)."
+      placeholder: |
+        todoist_tasks, Open tasks, read
+        todoist_add, Add a task, write_reversible
+  - type: dropdown
+    id: auth
+    attributes:
+      label: How it connects
+      options:
+        - Remote MCP server with OAuth 2.1 (PKCE, dynamic client registration)
+        - OAuth 2.0 with PKCE
+        - API key sealed on the server
+        - Other (explain below)
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: What could go wrong
+      description: What does a write change, and how does the owner undo it? What foreign text does the service return (titles, notes, messages from others)? Does anything need the web interface's public address?
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Rules
+      options:
+        - label: Tools, levels and descriptions come from the catalog, never from the provider.
+          required: true
+        - label: Only read and write_reversible; writing tools are ownerOriginOnly and cleanTurnOnly.
+          required: true
+        - label: No scraping behind a login, no bypassing bot protection or CAPTCHAs.
+          required: true
+        - label: "`pnpm typecheck` and `pnpm test` pass with the connector in my instance (fuzz tests included)."
+        - label: This issue contains no secrets and no personal data.
+          required: true

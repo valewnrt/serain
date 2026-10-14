@@ -1,0 +1,26 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+supabase/.temp/
+data/
+# Also when data is a symlink to your own copy.
+/data
+.dev.vars
+.wrangler/
+# Your instance's configuration (domain, Access, Hyperdrive, vault key); the template is web/wrangler.toml.example.
+web/wrangler.toml
+# Copy of the template for `pnpm web:e2e`, only while it runs.
+web/wrangler.e2e.toml
+# The owner's own additions (docs/INSTANCE.md), usually a symlink into their private repository.
+/instance
+
+# Subagent worktrees (Claude Code)
+.claude/worktrees/
+# Local Claude Code permissions, per machine
+.claude/settings.local.json
+# Preview servers of the desktop app, with paths of the local machine
+.claude/launch.json

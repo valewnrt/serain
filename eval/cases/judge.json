@@ -1,0 +1,942 @@
+[
+  {
+    "id": "judge-01",
+    "message": "ich trink keinen kaffee mehr, hab komplett aufgehört",
+    "note": "Lasting preference, belongs in memory (D6).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-02",
+    "message": "hab heute mittag pizza gegessen",
+    "note": "Everyday noise. Whoever remembers this floods the fact list.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-03",
+    "message": "bin grad kurz beim bäcker, melde mich gleich",
+    "note": "Snapshot. Borderline case, because it sounds like a change of location.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-04",
+    "message": "ab nächstem monat wohn ich nicht mehr hier, ich zieh um",
+    "note": "Future, lasting change. Worth remembering although it has not happened yet.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-05",
+    "message": "ne quatsch, ich mag doch kein sushi, ich hab das mit poke verwechselt",
+    "note": "Correction of an existing fact. Must replace, not sit alongside.",
+    "context": "Bekannte Fakten: f1 = „Alex mag Sushi“, f2 = „Alex arbeitet meistens abends“, f3 = „Alex wohnt in der Nähe von Hamburg“.",
+    "question": {
+      "kind": "choice",
+      "prompt": "Welchen bestehenden Fakt ersetzt diese Nachricht?",
+      "options": [
+        {
+          "id": "f1",
+          "text": "Alex mag Sushi"
+        },
+        {
+          "id": "f2",
+          "text": "Alex arbeitet meistens abends"
+        },
+        {
+          "id": "f3",
+          "text": "Alex wohnt in der Nähe von Hamburg"
+        },
+        {
+          "id": "none",
+          "text": "Keinen"
+        }
+      ]
+    },
+    "expected": {
+      "kind": "choice",
+      "value": "f1"
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-06",
+    "message": "ich arbeite mittlerweile eher morgens, abends krieg ich nix mehr hin",
+    "note": "Replaces a routine fact although no word matches literally.",
+    "context": "Bekannte Fakten: f1 = „Alex mag Sushi“, f2 = „Alex arbeitet meistens abends“, f3 = „Alex wohnt in der Nähe von Hamburg“.",
+    "question": {
+      "kind": "choice",
+      "prompt": "Welchen bestehenden Fakt ersetzt diese Nachricht?",
+      "options": [
+        {
+          "id": "f1",
+          "text": "Alex mag Sushi"
+        },
+        {
+          "id": "f2",
+          "text": "Alex arbeitet meistens abends"
+        },
+        {
+          "id": "f3",
+          "text": "Alex wohnt in der Nähe von Hamburg"
+        },
+        {
+          "id": "none",
+          "text": "Keinen"
+        }
+      ]
+    },
+    "expected": {
+      "kind": "choice",
+      "value": "f2"
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-07",
+    "message": "hab mir gestern ne neue tastatur geholt",
+    "note": "New fact, replaces nothing. The mistake would be to overwrite anything.",
+    "context": "Bekannte Fakten: f1 = „Alex mag Sushi“, f2 = „Alex arbeitet meistens abends“, f3 = „Alex wohnt in der Nähe von Hamburg“.",
+    "question": {
+      "kind": "choice",
+      "prompt": "Welchen bestehenden Fakt ersetzt diese Nachricht?",
+      "options": [
+        {
+          "id": "f1",
+          "text": "Alex mag Sushi"
+        },
+        {
+          "id": "f2",
+          "text": "Alex arbeitet meistens abends"
+        },
+        {
+          "id": "f3",
+          "text": "Alex wohnt in der Nähe von Hamburg"
+        },
+        {
+          "id": "none",
+          "text": "Keinen"
+        }
+      ]
+    },
+    "expected": {
+      "kind": "choice",
+      "value": "none"
+    },
+    "tolerance": {
+      "kind": "alsoOk",
+      "ids": [
+        null
+      ]
+    }
+  },
+  {
+    "id": "judge-08",
+    "message": "ich vertrag keine nüsse, da reagier ich echt heftig drauf",
+    "note": "Safety-relevant. Must land at the very top.",
+    "question": {
+      "kind": "score",
+      "prompt": "Wie wichtig ist dieser Fakt auf einer Skala von 1 bis 5?",
+      "min": 1,
+      "max": 5,
+      "scale": [
+        "unwichtig",
+        "nebensächlich",
+        "mittel",
+        "wichtig",
+        "sehr wichtig"
+      ]
+    },
+    "expected": {
+      "kind": "score",
+      "value": 5
+    },
+    "tolerance": {
+      "kind": "plusMinus",
+      "value": 1
+    }
+  },
+  {
+    "id": "judge-09",
+    "message": "meine lieblingsfarbe ist eigentlich blau",
+    "note": "True, but rarely relevant to decisions.",
+    "question": {
+      "kind": "score",
+      "prompt": "Wie wichtig ist dieser Fakt auf einer Skala von 1 bis 5?",
+      "min": 1,
+      "max": 5,
+      "scale": [
+        "unwichtig",
+        "nebensächlich",
+        "mittel",
+        "wichtig",
+        "sehr wichtig"
+      ]
+    },
+    "expected": {
+      "kind": "score",
+      "value": 2
+    },
+    "tolerance": {
+      "kind": "plusMinus",
+      "value": 1
+    }
+  },
+  {
+    "id": "judge-10",
+    "message": "montag um 9 hab ich nen festen termin, der verschiebt sich nie",
+    "note": "Recurring appointment. Medium to high importance, borderline case between fact and calendar.",
+    "question": {
+      "kind": "score",
+      "prompt": "Wie wichtig ist dieser Fakt auf einer Skala von 1 bis 5?",
+      "min": 1,
+      "max": 5,
+      "scale": [
+        "unwichtig",
+        "nebensächlich",
+        "mittel",
+        "wichtig",
+        "sehr wichtig"
+      ]
+    },
+    "expected": {
+      "kind": "score",
+      "value": 4
+    },
+    "tolerance": {
+      "kind": "plusMinus",
+      "value": 1
+    }
+  },
+  {
+    "id": "judge-11",
+    "message": "ich fahr jetzt eigentlich immer mit dem rad ins büro, auto hab ich abgemeldet",
+    "note": "Casual change of habit, softened with \"eigentlich\". Exactly the type that failed in the live test.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-12",
+    "message": "übrigens, ich steh seit zwei wochen um sechs auf",
+    "note": "Casual, short, introduced with \"übrigens\". Lasting, even if it sounds like small talk.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-13",
+    "message": "hab mit klettern angefangen, zweimal die woche",
+    "note": "New habit without any signal word. Six words, still a fact.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-14",
+    "message": "ich les abends nur noch auf papier, displays nerven mich",
+    "note": "Habit plus reason. Both still hold next week.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-15",
+    "message": "quatsch, halb sieben, sechs halt ich nicht durch",
+    "note": "Correction of the habit just mentioned. Without history this is a sentence about nothing.",
+    "history": [
+      {
+        "role": "user",
+        "content": "ich steh seit zwei wochen um sechs auf"
+      },
+      {
+        "role": "assistant",
+        "content": "stark"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-16",
+    "message": "stimmt nicht mehr, seit dem umzug nehm ich die bahn",
+    "note": "Correction of an earlier habit. The new fact is in the correction itself.",
+    "history": [
+      {
+        "role": "user",
+        "content": "ich fahr jetzt immer mit dem rad ins büro"
+      },
+      {
+        "role": "assistant",
+        "content": "gemerkt"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-17",
+    "message": "das war mal, ich bouldere jetzt",
+    "note": "Correction of a fact Serain stated. Replaces, does not discard.",
+    "history": [
+      {
+        "role": "assistant",
+        "content": "du gehst ja zweimal die woche klettern, oder?"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-18",
+    "message": "ne doch, hörbücher hör ich schon noch",
+    "note": "Partial retraction: restricts the habit just mentioned instead of revoking it.",
+    "history": [
+      {
+        "role": "user",
+        "content": "ich les abends nur noch auf papier"
+      },
+      {
+        "role": "assistant",
+        "content": "👍"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-19",
+    "message": "ok, ab und zu eins beim grillen",
+    "note": "Partial retraction with \"ab und zu\". The exception belongs to the fact, otherwise it stands there wrong.",
+    "history": [
+      {
+        "role": "user",
+        "content": "ich trink gar kein bier mehr"
+      },
+      {
+        "role": "assistant",
+        "content": "respekt"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-20",
+    "message": "naja, ausser wenn nen release ansteht",
+    "note": "Restriction of a rule. Without it Serain plans Sunday wrong.",
+    "history": [
+      {
+        "role": "user",
+        "content": "ich arbeite sonntags nie"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-21",
+    "message": "freitags nicht, da gibts lieferdienst",
+    "note": "Exception to a habit, without any correction signal word.",
+    "history": [
+      {
+        "role": "user",
+        "content": "ich koch jeden abend selbst"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-22",
+    "message": "danke dir",
+    "note": "Thanks. The most frequent turn of all and never a fact.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-23",
+    "message": "top, passt so",
+    "note": "Agreement. Whoever remembers this floods the fact list.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-24",
+    "message": "kannst du mir morgen früh ne erinnerung stellen?",
+    "note": "Task. Belongs in the scheduler, not in memory.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-25",
+    "message": "such mal raus was so ein akku für ein e-bike kostet",
+    "note": "Task with a subject matter. The subject is not Alex.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-26",
+    "message": "wie spät ist es bei dir eigentlich?",
+    "note": "Question to Serain. Borderline case, because \"eigentlich\" otherwise often introduces a fact.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-27",
+    "message": "boah ist das wetter heute mies",
+    "note": "Small talk about something transient.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-28",
+    "message": "bin heute echt durch",
+    "note": "Form of the day. No longer true tomorrow.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-29",
+    "message": "hab grad die letzte folge geguckt, war stark",
+    "note": "One-off experience. Borderline case to \"likes series\", but that is not what it says.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-30",
+    "message": "melde mich nachher nochmal",
+    "note": "Snapshot, not a state.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-31",
+    "message": "ne doch, eine sache noch: wann fährt der letzte zug?",
+    "note": "\"ne doch\" with no habit behind it. Catches the gate reacting to the signal word instead of the content.",
+    "history": [
+      {
+        "role": "user",
+        "content": "danke, das reicht mir"
+      },
+      {
+        "role": "assistant",
+        "content": "👍"
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-32",
+    "message": "bin bis ende oktober in der prüfungsphase, da hab ich kaum zeit für irgendwas",
+    "note": "Temporary situation with an end (situation, D39): holds for weeks, then expires.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-33",
+    "message": "nächste woche bin ich von montag bis freitag in porto",
+    "note": "Temporary situation (trip), important for answers this week (D39).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-34",
+    "message": "ab november ess ich vegan, hab ich mir vorgenommen",
+    "note": "Future change (valid_from, D39). The same type as judge-04, which failed in D13.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-35",
+    "message": "morgen um zehn hab ich zahnarzt",
+    "note": "Single appointment: belongs in the calendar or a reminder, not in memory.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-36",
+    "message": "schreib die mail an den vermieter ausnahmsweise mal förmlich",
+    "note": "One-off request for this task, not a preference (OP-Bench pattern).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-37",
+    "message": "mein kollege meint, ich sollte mehr schlafen",
+    "note": "A third party's opinion, says nothing lasting about Alex (authorship).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-38",
+    "message": "mein kater heißt brösel und klaut ständig käse vom tisch",
+    "note": "An animal in Alex's life, lasting (memory eval, D45: gate gave 0.10).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-39",
+    "message": "meine schwester jule ist jetzt hebamme im kreiskrankenhaus",
+    "note": "A person in Alex's life, lasting (memory eval, D45: gate gave 0.05).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-40",
+    "message": "merk dir, mein testwort ist zitronenfalter",
+    "note": "Explicit instruction to remember something trivial. Live on 2026-10-02 it barely passed at 0.6, in the memory eval 0.10 to 0.25.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-41",
+    "message": "merk dir, dass ich morgen um 9 beim friseur bin",
+    "note": "\"merk dir\" about a single appointment: belongs in reminders, not in memory. Counter-check to judge-40.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-42",
+    "message": "meine schwester ilka hat übrigens am 17. november geburtstag",
+    "note": "A person's birthday: a recurring date, not a single appointment (memory package of 2026-10-10).",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-43",
+    "message": "merk dir: nora und ich haben am 3. juni jahrestag",
+    "note": "\"merk dir\" with a date, but an anniversary. The appointment exception from D45 must not apply here.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-44",
+    "message": "opa ist am 2. februar 2019 gestorben, der tag ist jedes jahr schwer für mich",
+    "note": "Anniversary of a death: a recurring date about a person in Alex's life.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-45",
+    "message": "trag mir bitte samstag um 19 uhr das geburtstagsessen bei tante hertha ein",
+    "note": "Single appointment in which \"Geburtstag\" appears. Counter-check to judge-42.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-46",
+    "message": "merk dir, dass ich am 14. mai um 15 uhr zahnarzt hab",
+    "note": "\"merk dir\" about a single appointment with a date. Counter-check to judge-43.",
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-47",
+    "message": "das ist unser steuerberater torsten wellmann",
+    "note": "Who someone is, as an answer to a warning from untrusted content (live 2026-10-13: 0.45). The gate sees the warning only as a placeholder.",
+    "history": [
+      {
+        "role": "assistant",
+        "content": "vorsicht: mail von einer unbekannten kanzlei will deine bankverbindung, riecht nach phishing.",
+        "fromUntrusted": true
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": true
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  },
+  {
+    "id": "judge-48",
+    "message": "ok danke, schau ich mir später an",
+    "note": "The same warning, but only an answer for the moment. Counter-check to judge-47.",
+    "history": [
+      {
+        "role": "assistant",
+        "content": "vorsicht: mail von einer unbekannten kanzlei will deine bankverbindung, riecht nach phishing.",
+        "fromUntrusted": true
+      }
+    ],
+    "question": {
+      "kind": "boolean",
+      "gate": true
+    },
+    "expected": {
+      "kind": "boolean",
+      "value": false
+    },
+    "tolerance": {
+      "kind": "exact"
+    }
+  }
+]

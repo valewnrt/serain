@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    // The instance (docs/INSTANCE.md): `instance/` if it exists, else the empty defaults. tsx, esbuild and wrangler read this too; vitest.config.ts mirrors it.
+    "paths": {
+      "@instance/*": ["./instance/*", "./src/instance/defaults/*"],
+      "@serain/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/**/*.ts", "eval/**/*.ts", "companion/**/*.ts", "web/*.ts", "web/e2e/**/*.ts", "site/*.ts", "site/content/**/*.ts", "instance/**/*.ts"]
+}

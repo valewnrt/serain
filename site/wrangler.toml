@@ -1,0 +1,28 @@
+# serain.si, the project's public website (D65): landing page and connector directory.
+# Unlike web/wrangler.toml this file is the same for everyone and therefore tracked; an instance's
+# web interface runs on its own origin behind Access (D49), never on this domain.
+# Local: `pnpm site:dev`. Live: `pnpm site:deploy` (scripts/site-cloudflare.ts).
+name = "serain-site"
+main = "worker/worker.ts"
+compatibility_date = "2026-09-01"
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "serain.si", custom_domain = true }]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# Every request goes through the Worker first: it sets the security headers, on static files too.
+run_worker_first = true
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+# Counting in the Worker, never in the browser (site/worker/analytics.ts): no IP, no cookie,
+# no raw user agent. Read with `pnpm site:stats`.
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "serain_site"
+
+[dev]
+port = 8788
+local_protocol = "http"

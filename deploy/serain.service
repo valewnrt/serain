@@ -1,0 +1,54 @@
+[Unit]
+Description=Serain personal agent
+Documentation=file:///opt/serain/deploy/README.md
+After=network-online.target
+Wants=network-online.target
+# Do not give up after too many crashes in a short time: Serain is meant to run 24/7.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=serain
+Group=serain
+WorkingDirectory=/opt/serain
+EnvironmentFile=/etc/serain/serain.env
+# The Agent SDK writes to HOME. ProtectHome=yes hides /home, so HOME points
+# to the only writable directory of the service.
+Environment=HOME=/opt/serain/data
+Environment=SERAIN_DATA_DIR=/opt/serain/data
+# The only way to a container (D20). The service itself is not in the group docker.
+Environment=SERAIN_SANDBOX_SOCKET=/run/serain-sandbox.sock
+# This is where Serain creates the socket of its filter proxy; the helper passes exactly
+# this directory read-only into the container of `media_fetch` (D61).
+Environment=SERAIN_MEDIA_PROXY_DIR=/run/serain/media-proxy
+# Not the .bin shim: that is an sh script, node cannot execute it.
+ExecStart=/usr/bin/node /opt/serain/node_modules/tsx/dist/cli.mjs /opt/serain/src/index.ts
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=serain
+
+# Hardening: the process will at some point read mail and execute code (D8).
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/serain/data
+# /run/serain: this is where the service reports what it is doing (work.json, src/health/work.ts);
+# deploy.sh waits on it before restarting. Disappears with the service, no stale state is left behind.
+RuntimeDirectory=serain
+RuntimeDirectoryMode=0755
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+# Up to three prewarmed model processes of about 250 MB each wait for their
+# turn (D50), plus a Chrome for web_browse. Requires a VM with at least 4 GB
+# RAM; the sandbox containers come on top, outside this limit.
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

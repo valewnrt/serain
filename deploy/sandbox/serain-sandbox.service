@@ -1,0 +1,33 @@
+[Unit]
+Description=Serain sandbox: helper for fixed docker run jobs (D20)
+Requires=serain-sandbox.socket docker.service
+After=docker.service
+
+[Service]
+Type=simple
+# A user of its own in the group docker. That equals root, so the code is
+# owned by root, lives outside /opt/serain and only takes fixed jobs.
+User=serain-sandbox
+Group=serain-sandbox
+SupplementaryGroups=docker
+Environment=HOME=/run/serain-sandbox
+Environment=DOCKER_CONFIG=/run/serain-sandbox
+RuntimeDirectory=serain-sandbox
+ExecStart=/usr/bin/node /usr/local/lib/serain-sandbox/helper.mjs
+Restart=on-failure
+RestartSec=3
+SyslogIdentifier=serain-sandbox
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+# A video goes through the helper as a whole (D61): up to 100 MB of input plus
+# output, twice that with two jobs at once.
+MemoryMax=768M

@@ -1,0 +1,66 @@
+# Secret scan before every commit (.githooks/pre-commit, scripts/secret-scan.ts).
+# The default rules of gitleaks plus the key formats Serain actually uses.
+# scripts/secret-scan.ts additionally checks real values from `.dev.vars`
+# literally, which also catches what has no pattern.
+
+title = "serain"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "supabase-secret-key"
+description = "Supabase Secret Key"
+regex = '''sb_secret_[A-Za-z0-9_-]{20,}'''
+keywords = ["sb_secret_"]
+
+[[rules]]
+id = "anthropic-oauth-token"
+description = "Claude subscription token (CLAUDE_CODE_OAUTH_TOKEN)"
+regex = '''sk-ant-oat\d{2}-[A-Za-z0-9_-]{20,}'''
+keywords = ["sk-ant-oat"]
+
+[[rules]]
+id = "anthropic-api-key-serain"
+description = "Anthropic API key (ANTHROPIC_API_KEY)"
+regex = '''sk-ant-api\d{2}-[A-Za-z0-9_-]{20,}'''
+keywords = ["sk-ant-api"]
+
+[[rules]]
+id = "openrouter-api-key"
+description = "OpenRouter API Key"
+regex = '''sk-or-v1-[A-Za-z0-9]{32,}'''
+keywords = ["sk-or-v1-"]
+
+[[rules]]
+id = "tavily-api-key"
+description = "Tavily API Key"
+regex = '''tvly-[A-Za-z0-9_-]{20,}'''
+keywords = ["tvly-"]
+
+[[rules]]
+id = "healthchecks-ping-url"
+description = "Healthchecks.io ping URL (whoever knows it can silence the dead man's switch)"
+regex = '''hc-ping\.com/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'''
+keywords = ["hc-ping.com/"]
+
+[[rules]]
+id = "german-phone-number"
+description = "German phone number in international format (the owner's or a third party's)"
+regex = '''\+49[\s/-]?\(?0?\)?[1-9](?:[\s/-]?\d){6,12}'''
+keywords = ["+49"]
+# Recognizably made-up numbers in the tests: runs of zeros, ones or counting
+# sequences, also with spaces in between (`+49 151 123 456-78`).
+[[rules.allowlists]]
+regexTarget = "match"
+regexes = ['''0[\s/-]?0[\s/-]?0[\s/-]?0''', '''(?:1[\s/-]?){7}''', '''1[\s/-]?2[\s/-]?3[\s/-]?4[\s/-]?5[\s/-]?6[\s/-]?7''']
+
+# Test fixtures, not real credentials: a made-up password and the
+# TOTP test vector from RFC 6238 (Base32 of "12345678901234567890"). Only exactly
+# these values and only in this file (both must apply).
+[[allowlists]]
+description = "Test fixtures in test/site.test.ts"
+condition = "AND"
+paths = ['''^test/site\.test\.ts$''']
+regexTarget = "secret"
+regexes = ['''^(?:geheimes-passwort-1|GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ)$''']

@@ -1,0 +1,13 @@
+[Unit]
+Description=Serain sandbox: socket (D20)
+
+[Socket]
+ListenStream=/run/serain-sandbox.sock
+# Only the service `serain` may send jobs. It is not in the group `docker`;
+# this socket is its only way to a container.
+SocketUser=root
+SocketGroup=serain
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleIdentifier</key><string>com.serain.apple-helper</string>
+  <key>CFBundleName</key><string>Serain Apple</string>
+  <key>CFBundleExecutable</key><string>serain-apple</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>1.0</string>
+  <key>CFBundleVersion</key><string>1</string>
+  <key>LSMinimumSystemVersion</key><string>14.0</string>
+  <key>LSUIElement</key><true/>
+  <key>NSCalendarsFullAccessUsageDescription</key><string>Serain reads your events to answer questions about them. It changes nothing.</string>
+  <key>NSRemindersFullAccessUsageDescription</key><string>Serain reads your open reminders to answer questions about them. It changes nothing.</string>
+  <key>NSContactsUsageDescription</key><string>Serain looks up individual contacts when you ask about someone. It changes nothing.</string>
+</dict>
+</plist>

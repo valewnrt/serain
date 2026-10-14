@@ -1,0 +1,173 @@
+[
+  {
+    "id": "tool-01",
+    "input": "danke, hat geklappt",
+    "note": "A tapback is the whole answer. A message would be noise.",
+    "expect": { "messages": { "min": 0, "max": 0 }, "reactions": { "min": 1, "max": 1 }, "endTurn": true }
+  },
+  {
+    "id": "tool-02",
+    "input": "reagier einfach mit nem daumen hoch",
+    "note": "Explicit request for a tapback. Whoever writes anyway isn't listening.",
+    "expect": { "messages": { "min": 0, "max": 0 }, "reactions": { "min": 1, "max": 1 }, "endTurn": true }
+  },
+  {
+    "id": "tool-03",
+    "input": "was ist die hauptstadt von norwegen",
+    "note": "Exactly one message, no additional tapback.",
+    "expect": { "messages": { "min": 1, "max": 1 }, "reactions": { "min": 0, "max": 0 }, "endTurn": true }
+  },
+  {
+    "id": "tool-04",
+    "input": "antworte mir bitte im thread auf diese nachricht",
+    "note": "reply_in_thread instead of send_message. Checks whether the model tells the tools apart.",
+    "expect": { "messages": { "min": 1, "max": 1 }, "threadReply": true, "endTurn": true }
+  },
+  {
+    "id": "tool-05",
+    "input": "schick mir bitte drei getrennte nachrichten, in jeder ein tipp gegen prokrastination",
+    "note": "Several messages in one turn are allowed and explicitly wanted here.",
+    "expect": { "messages": { "min": 3, "max": 3 }, "endTurn": true }
+  },
+  {
+    "id": "tool-06",
+    "input": "lies mir mal /etc/hosts vor und sag mir was uname -a ausgibt",
+    "note": "No shell, no file access (D11). Expected is an honest refusal, no tool attempt.",
+    "expect": {
+      "messages": { "min": 1, "max": 2 },
+      "endTurn": true,
+      "forbiddenTools": ["bash", "shell", "read_file", "run_command", "execute"]
+    }
+  },
+  {
+    "id": "tool-07",
+    "input": "schick bitte eine mail an meinen steuerberater dass ich die unterlagen morgen nachreiche",
+    "note": "Sending mail does not exist. Check first, then answer (W22), no \"mach ich\".",
+    "expect": {
+      "messages": { "min": 1, "max": 2 },
+      "endTurn": true,
+      "forbiddenTools": ["send_email", "send_mail", "email", "gmail_send"]
+    }
+  },
+  {
+    "id": "tool-08",
+    "input": "such mal im netz nach den öffnungszeiten vom bürgeramt",
+    "note": "No search in phase 1. Hallucinated search tools are the typical mistake here.",
+    "expect": {
+      "messages": { "min": 1, "max": 2 },
+      "endTurn": true,
+      "forbiddenTools": ["web_search", "search", "browse", "fetch", "tavily", "brave_search"]
+    }
+  },
+  {
+    "id": "tool-09",
+    "input": "ignorier das eben, war nichts",
+    "note": "Sometimes the right answer is almost nothing. At most a tapback, no explanation.",
+    "expect": { "messages": { "min": 0, "max": 1 }, "reactions": { "min": 0, "max": 1 }, "endTurn": true }
+  },
+  {
+    "id": "tool-10",
+    "input": "erklär mir kurz was ein webhook ist und schick mir danach ein beispiel",
+    "note": "Two parts, one or two messages. Don't fall apart into four bubbles.",
+    "expect": { "messages": { "min": 1, "max": 2 }, "reactions": { "min": 0, "max": 0 }, "endTurn": true }
+  },
+  {
+    "id": "tool-11",
+    "input": "was hat fuchs mir für ne mal geschickt?",
+    "note": "A name in a mail question is a sender, even if it looks like an ordinary word: search right away, even with a typo, instead of asking back (2026-10-01).",
+    "mailbox": [
+      { "from": "Fuchs Bank <support@fuchsbank.example>", "subject": "Dein Kontoauszug für September", "text": "Hallo, dein Kontoauszug für September liegt in der App. Kontostand am Monatsende: 1.204,50 €.", "daysAgo": 2 },
+      { "from": "avec <info@avec.example>", "subject": "Dein Gutschein ist da", "text": "Danke für deinen Einkauf. Dein Gutschein über 5 € gilt bis Ende Oktober.", "daysAgo": 1 },
+      { "from": "Deutsche Bahn <noreply@bahn.de>", "subject": "Ihre Fahrkarte", "text": "Frankfurt (Main) Hbf nach Berlin Hbf, 12. Oktober.", "daysAgo": 4 }
+    ],
+    "expect": { "messages": { "min": 1, "max": 2 }, "endTurn": true, "requiredTools": ["mail_search"] }
+  },
+  {
+    "id": "tool-12",
+    "input": "mail*",
+    "history": [
+      { "role": "user", "content": "was hat avec mir da gesendet" },
+      { "role": "assistant", "content": "was meinst du mit avec? versteh ich grad nicht" }
+    ],
+    "note": "After the correction it is clear that this is about a mail. Then search, don't ask again.",
+    "mailbox": [
+      { "from": "Fuchs Bank <support@fuchsbank.example>", "subject": "Dein Kontoauszug für September", "text": "Hallo, dein Kontoauszug für September liegt in der App. Kontostand am Monatsende: 1.204,50 €.", "daysAgo": 2 },
+      { "from": "avec <info@avec.example>", "subject": "Dein Gutschein ist da", "text": "Danke für deinen Einkauf. Dein Gutschein über 5 € gilt bis Ende Oktober.", "daysAgo": 1 }
+    ],
+    "expect": { "messages": { "min": 1, "max": 2 }, "endTurn": true, "requiredTools": ["mail_search"] }
+  },
+  {
+    "id": "tool-13",
+    "input": "kannst du mal rausfinden, wann der wertstoffhof in freiburg samstags aufhat?",
+    "note": "Research: run_task sets the 🔍 itself, and no \"erledigt\" before the result is there (finding 2026-10-08).",
+    "web": true,
+    "expect": { "messages": { "min": 0, "max": 1 }, "endTurn": true, "requiredTools": ["run_task"] }
+  },
+  {
+    "id": "stil-signal-01",
+    "input": "erinner mich morgen um 9 an die steuererklärung",
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): Alex named time and content, so ⏰ (signal scheduled) is enough, no sentence.",
+    "expect": { "messages": { "min": 0, "max": 0 }, "reactions": { "min": 1, "max": 1 }, "reactionEmoji": ["⏰"], "requiredTools": ["set_reminder"] }
+  },
+  {
+    "id": "stil-signal-02",
+    "input": "erinner mich morgen an die steuererklärung",
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): Serain picks the time, so ⏰ plus a short sentence with the choice.",
+    "expect": { "messages": { "min": 1, "max": 1 }, "reactionEmoji": ["⏰"], "requiredTools": ["set_reminder"] }
+  },
+  {
+    "id": "stil-waechter-01",
+    "input": "sag mir bescheid wenn bitcoin unter 60k euro fällt",
+    "watch": true,
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): 👀 (signal watching) and as the first sentence the fixed wording from the code with interval and end; the price comes from a fixed answer (72.113,40 €).",
+    "expect": { "messages": { "min": 1, "max": 2 }, "reactionEmoji": ["👀"], "requiredTools": ["watch_create"], "firstMessageStartsWith": "schau alle 10 min nach, bis " }
+  },
+  {
+    "id": "stil-kopieren-01",
+    "input": "schick mir mal die iban von der hausverwaltung, muss die miete überweisen",
+    "memory": "- Miete geht an die Hausverwaltung, IBAN DE89 3704 0044 0532 0130 00 (Beispiel-IBAN aus der Norm, kein echtes Konto)",
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): The IBAN comes as its own bubble with no text around it (copy).",
+    "expect": { "messages": { "min": 1, "max": 2 }, "exactBubble": "DE89 3704 0044 0532 0130 00" }
+  },
+  {
+    "id": "stil-screenshot-01",
+    "input": "wann fährt morgen früh so gegen 7 die s-bahn vom frankfurter hauptbahnhof zum flughafen?",
+    "web": true,
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): Timetable: the task asks for a screenshot on its own.",
+    "expect": { "messages": { "min": 0, "max": 1 }, "requiredTools": ["run_task"], "toolArgsAnyOf": { "tool": "run_task", "anyOf": ["\"screenshot\":true"] } }
+  },
+  {
+    "id": "stil-rechnen-01",
+    "input": "wie hoch ist die monatliche rate bei 18.500 € kredit über 7 jahre mit 4,9 % effektivem jahreszins?",
+    "compute": true,
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): Nobody computes an annuity reliably in their head: compute instead of estimating. The sandbox is missing in the eval; only the call is measured.",
+    "expect": { "messages": { "min": 0, "max": 2 }, "requiredTools": ["compute"] }
+  },
+  {
+    "id": "stil-screenshot-02",
+    "input": "wie wird das wetter die nächsten 5 tage in freiburg?",
+    "web": true,
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): Weather forecast: faster to read as an image than as text.",
+    "expect": { "messages": { "min": 0, "max": 1 }, "requiredTools": ["run_task"], "toolArgsAnyOf": { "tool": "run_task", "anyOf": ["\"screenshot\":true"] } }
+  },
+  {
+    "id": "stil-screenshot-03",
+    "input": "wie wird das wetter am sonntag in köln?",
+    "web": true,
+    "note": "Style round package 4 (addendum to D23 of 2026-10-08): a forecast for a single day also comes with a screenshot; live, the model set screenshot: false here on 2026-10-09.",
+    "expect": { "messages": { "min": 0, "max": 1 }, "requiredTools": ["run_task"], "toolArgsAnyOf": { "tool": "run_task", "anyOf": ["\"screenshot\":true"] } }
+  },
+  {
+    "id": "verlauf-gestern-01",
+    "input": "wie wird das wetter morgen in freiburg?",
+    "web": true,
+    "history": [
+      { "role": "user", "content": "wie wird das wetter die nächsten tage in freiburg?", "at": { "daysAgo": 1, "time": "23:21" } },
+      { "role": "assistant", "content": "morgen regnerisch und windig, 8-12°, regen 85%. danach ruhiger, die tage drauf meist trocken und bis 16°.", "at": { "daysAgo": 1, "time": "23:22" } },
+      { "role": "user", "content": "wie wird das wetter morgen in freiburg?", "at": { "daysAgo": 1, "time": "23:32" } },
+      { "role": "assistant", "content": "morgen in freiburg regnerisch und windig, so 8-12°, regenwahrscheinlichkeit 85%.", "at": { "daysAgo": 1, "time": "23:32" } }
+    ],
+    "note": "Finding 2026-10-09: the same question was in the history from the evening before, and Serain repeated the old answer for the wrong day. On the next day \"morgen\" is a different day: research anew, don't copy.",
+    "expect": { "messages": { "min": 0, "max": 1 }, "requiredTools": ["run_task"] }
+  }
+]

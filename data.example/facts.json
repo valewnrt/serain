@@ -1,0 +1,11 @@
+[
+  { "category": "identity", "confidence": 1, "content": "Alex lives in Musterstadt, rented flat on the second floor." },
+  { "category": "work", "confidence": 0.9, "content": "Alex works as a project lead at an engineering firm, Fridays from home.", "kind": "identity" },
+  { "category": "relationships", "confidence": 1, "content": "Sam is Alex's partner, they live together.", "kind": "identity" },
+  { "category": "relationships", "confidence": 0.9, "content": "Mia is Alex's sister and lives two hours away.", "kind": "identity" },
+  { "category": "sports", "confidence": 0.8, "content": "Alex runs three times a week in the morning before work.", "kind": "preference" },
+  { "category": "food", "confidence": 0.9, "content": "Alex does not eat meat.", "kind": "preference" },
+  { "category": "workstyle", "confidence": 0.9, "content": "Alex wants no appointments before 9 am.", "kind": "preference" },
+  { "category": "style", "confidence": 0.9, "content": "Alex likes answers short, with the decision first.", "kind": "preference" },
+  { "category": "travel", "confidence": 0.8, "content": "Alex is on holiday in Lisbon from 3 to 10 May.", "kind": "situation", "valid_from": "2027-05-03", "valid_until": "2027-05-10" }
+]

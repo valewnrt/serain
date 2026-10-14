@@ -1,0 +1,1260 @@
+[
+  {
+    "id": "abruf-01",
+    "category": "abruf",
+    "holdout": false,
+    "note": "Appointment with a date (episode). The question names neither doctor nor place. Today the gate explicitly discards appointments; the case shows whether an episode that still matters later arrives at all.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat am 14.03.2026 um 9 Uhr eine Zahnreinigung bei Dr. Brandt in Ahrenfeld.", "kind": "episode", "validUntil": "2026-03-14" },
+      { "id": "d1", "content": "Hausarzt Dr. Wendt (Ablenker, steht schon da).", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "gesundheit", "content": "Alex geht einmal im Jahr zur Vorsorge bei seinem Hausarzt Dr. Wendt.", "at": "2026-01-10T10:00:00+01:00" },
+        { "category": "gesundheit", "content": "Alex trägt eine Brille.", "at": "2026-01-10T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-04T19:12:00+01:00", "from": "owner", "text": "hab übrigens bei dr. brandt in ahrenfeld ne zahnreinigung gebucht, 14.03. um 9" },
+      { "at": "2026-03-04T19:13:00+01:00", "from": "serain", "text": "top, dann weißt du ja bescheid" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "zahnreinigung|zahnarzt|brandt" },
+      { "type": "kind", "pattern": "zahnreinigung|brandt", "kind": "episode" },
+      { "type": "valid_until", "pattern": "zahnreinigung|brandt", "date": "2026-03-14" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-03-10T08:00:00+01:00", "query": "wann muss ich nochmal zum zahnarzt?", "pattern": "zahnreinigung|brandt|zahnarzt" }
+    ],
+    "answer": {
+      "at": "2026-03-10T08:05:00+01:00",
+      "question": "wann war nochmal der termin beim zahnarzt?",
+      "anyOf": [["14.03", "14.3", "14. märz", "14. maerz", "vierzehnten"], ["9 uhr", "9:00", "um 9", "9.00", "neun"]]
+    }
+  },
+  {
+    "id": "abruf-02",
+    "category": "abruf",
+    "holdout": false,
+    "note": "Allergy mentioned in passing, question weeks later about a baking plan, without the word nut.",
+    "truth": [
+      { "id": "t1", "content": "Alex ist allergisch gegen Haselnüsse.", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "essen", "content": "Alex trinkt seinen Kaffee schwarz.", "at": "2026-03-01T09:00:00+01:00" },
+        { "category": "hobby", "content": "Alex backt am Wochenende gern Brot.", "at": "2026-03-01T09:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-04-02T21:30:00+02:00", "from": "owner", "text": "kleine info am rande: bin allergisch gegen haselnüsse, also nix mit nutella und so 😅" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "haselnuss|haselnuess" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-05-10T10:00:00+02:00", "query": "worauf muss ich beim kuchenbacken bei mir aufpassen", "pattern": "haselnuss|haselnuess" }
+    ],
+    "answer": {
+      "at": "2026-05-10T10:05:00+02:00",
+      "question": "ich back am we nen kuchen fürs büro, worauf muss ich bei mir selbst achten?",
+      "anyOf": [["haselnuss", "haselnüsse", "nüsse", "nuss"]]
+    }
+  },
+  {
+    "id": "abruf-03",
+    "category": "abruf",
+    "holdout": true,
+    "note": "Car with colour and model, question about the colour in entirely different wording.",
+    "truth": [
+      { "id": "t1", "content": "Alex fährt einen grauen Skoda Octavia Kombi.", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "mobilitaet", "content": "Alex fährt im Sommer gern mit dem Fahrrad.", "at": "2026-01-05T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-02-11T18:40:00+01:00", "from": "owner", "text": "mein auto is übrigens n grauer skoda octavia kombi, falls du das mal brauchst" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "octavia|skoda" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-03-20T17:00:00+01:00", "query": "was für ne karre fahr ich nochmal", "pattern": "octavia|skoda" }
+    ],
+    "answer": {
+      "at": "2026-03-20T17:05:00+01:00",
+      "question": "welche farbe hat nochmal mein auto? steh grad aufm parkplatz und find es nicht 🙈",
+      "anyOf": [["grau"]]
+    }
+  },
+  {
+    "id": "abruf-04",
+    "category": "abruf",
+    "holdout": false,
+    "note": "Question with two typos (voleyball, traning). Full text does not find it, only the vector can.",
+    "truth": [
+      { "id": "t1", "content": "Alex spielt seit Jahren dienstags Volleyball im Verein in Lindmoor.", "kind": "preference" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "sport", "content": "Alex geht samstags schwimmen.", "at": "2026-01-02T10:00:00+01:00" },
+        { "category": "sport", "content": "Alex spielt manchmal Tischtennis mit Kollegen.", "at": "2026-01-02T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-01-20T20:00:00+01:00", "from": "owner", "text": "ich spiel seit jahren dienstags volleyball im verein in lindmoor" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "volleyball" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-02-17T17:00:00+01:00", "query": "wann is nochmal mein voleyball traning", "pattern": "volleyball" }
+    ],
+    "answer": {
+      "at": "2026-02-17T17:05:00+01:00",
+      "question": "hab ich heut abend eigentlich training?",
+      "anyOf": [["volleyball", "dienstag"]]
+    }
+  },
+  {
+    "id": "abruf-05",
+    "category": "abruf",
+    "holdout": true,
+    "note": "Rare proper name with a hyphen. The question says tax, not tax advisor.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Steuerberaterin ist Frau Okonkwo-Lenz, seit 2023.", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "arbeit", "content": "Alex arbeitet als selbstständiger Grafiker.", "at": "2026-01-15T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-02T12:15:00+01:00", "from": "owner", "text": "meine steuerberaterin heißt frau okonkwo-lenz, die macht das seit 2023 für mich" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "okonkwo" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-05-28T09:00:00+02:00", "query": "wer kümmert sich um meine steuererklärung", "pattern": "okonkwo|steuerberat" }
+    ],
+    "answer": {
+      "at": "2026-05-28T09:05:00+02:00",
+      "question": "muss bald die unterlagen für die steuer abgeben, an wen nochmal?",
+      "anyOf": [["okonkwo"]]
+    }
+  },
+  {
+    "id": "abruf-06",
+    "category": "abruf",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: only the owner's own tomcat is stored. The question about the neighbour's dog must not be answered with the cat's name.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Kater heißt Brösel.", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "wohnen", "content": "Alex hat eine Nachbarin, Frau Kessler, die ihm manchmal Pakete annimmt.", "at": "2026-03-01T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-04-14T19:00:00+02:00", "from": "owner", "text": "mein kater heißt brösel und klaut ständig käse vom tisch" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "broesel|kater" }
+    ],
+    "answer": {
+      "at": "2026-05-02T11:00:00+02:00",
+      "question": "wie heißt nochmal der hund von meiner nachbarin?",
+      "anyOf": [["@unbekannt"]],
+      "notContains": ["brösel"]
+    }
+  },
+  {
+    "id": "zusammen-01",
+    "category": "zusammenfuehren",
+    "holdout": false,
+    "note": "Three sessions over six weeks: registration, date, target time. The question needs place and date from two different messages.",
+    "truth": [
+      { "id": "t1", "content": "Alex läuft am 14.09.2026 den Halbmarathon in Brunnau.", "kind": "episode", "validUntil": "2026-09-14" },
+      { "id": "t2", "content": "Alex' Zielzeit für den Halbmarathon ist unter zwei Stunden.", "kind": "situation", "validUntil": "2026-09-14" }
+    ],
+    "script": [
+      { "at": "2026-05-02T09:10:00+02:00", "from": "owner", "text": "hab mich jetzt echt fürn halbmarathon in brunnau angemeldet 🙈" },
+      { "at": "2026-05-02T09:11:00+02:00", "from": "serain", "text": "stark! wann ist der?" },
+      { "at": "2026-05-20T18:30:00+02:00", "from": "owner", "text": "der lauf is übrigens am 14. september" },
+      { "at": "2026-06-15T07:45:00+02:00", "from": "owner", "text": "zielzeit wär unter 2 stunden, mal schauen" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "brunnau" },
+      { "type": "fact_present", "pattern": "september|14\\.0?9" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-07-01T19:00:00+02:00", "query": "wann und wo lauf ich nochmal den halbmarathon", "pattern": "brunnau" },
+      { "type": "recall", "at": "2026-07-01T19:00:00+02:00", "query": "wann und wo lauf ich nochmal den halbmarathon", "pattern": "september|14\\.0?9" }
+    ],
+    "answer": {
+      "at": "2026-07-01T19:05:00+02:00",
+      "question": "wann und wo war nochmal der halbmarathon?",
+      "anyOf": [["brunnau"], ["14. september", "14.09", "14.9", "14. sept"]]
+    }
+  },
+  {
+    "id": "zusammen-02",
+    "category": "zusammenfuehren",
+    "holdout": false,
+    "note": "Two messages about the sister six weeks apart: move and new job.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Schwester Jule wohnt in Talwies.", "kind": "identity", "validFrom": "2026-04-01" },
+      { "id": "t2", "content": "Jule arbeitet als Hebamme im Kreiskrankenhaus.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-03-01T20:00:00+01:00", "from": "owner", "text": "meine schwester jule zieht nächsten monat nach talwies" },
+      { "at": "2026-04-12T19:20:00+02:00", "from": "owner", "text": "jule hat jetzt ne stelle als hebamme im kreiskrankenhaus gefunden" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "talwies" },
+      { "type": "fact_present", "pattern": "hebamme" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-06-01T18:00:00+02:00", "query": "was arbeitet meine schwester", "pattern": "hebamme" }
+    ],
+    "answer": {
+      "at": "2026-06-01T18:05:00+02:00",
+      "question": "jule hat bald geburtstag, was macht die nochmal beruflich und wo wohnt sie jetzt? will was passendes schenken",
+      "anyOf": [["hebamme"], ["talwies"]]
+    }
+  },
+  {
+    "id": "zusammen-03",
+    "category": "zusammenfuehren",
+    "holdout": false,
+    "note": "Side project: first the name, later the platform, which is connected to the project only through the name.",
+    "truth": [
+      { "id": "t1", "content": "Alex baut nebenher eine App für Vereinskassen namens Kassenwart.", "kind": "situation" },
+      { "id": "t2", "content": "Kassenwart erscheint zuerst nur für Android, iOS später.", "kind": "situation" }
+    ],
+    "script": [
+      { "at": "2026-06-01T22:10:00+02:00", "from": "owner", "text": "ich bau nebenher ne app für vereinskassen, heißt kassenwart" },
+      { "at": "2026-06-20T21:00:00+02:00", "from": "owner", "text": "kassenwart kommt erstmal nur für android, ios später" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "kassenwart" },
+      { "type": "fact_present", "pattern": "android" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-07-10T20:00:00+02:00", "query": "auf welcher plattform startet mein nebenprojekt", "pattern": "android" }
+    ],
+    "answer": {
+      "at": "2026-07-10T20:05:00+02:00",
+      "question": "für welche plattform bring ich mein nebenprojekt zuerst raus?",
+      "anyOf": [["android"]]
+    }
+  },
+  {
+    "id": "zusammen-04",
+    "category": "zusammenfuehren",
+    "holdout": true,
+    "note": "Training: first frequency and place, five weeks later the days. The days are in the second message without the word training.",
+    "truth": [
+      { "id": "t1", "content": "Alex trainiert dreimal pro Woche im Fitnessstudio am Bahnhof.", "kind": "preference" },
+      { "id": "t2", "content": "Alex trainiert montags, mittwochs und freitags gegen 7 Uhr morgens.", "kind": "preference" }
+    ],
+    "script": [
+      { "at": "2026-02-10T19:00:00+01:00", "from": "owner", "text": "trainier jetzt 3x die woche im fitnessstudio am bahnhof" },
+      { "at": "2026-03-15T08:30:00+01:00", "from": "owner", "text": "montags mittwochs freitags, immer so gegen 7 morgens" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "fitness|studio|trainier" },
+      { "type": "fact_present", "pattern": "montag" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-04-01T20:00:00+02:00", "query": "wann geh ich eigentlich pumpen", "pattern": "montag|mittwoch|freitag" }
+    ],
+    "answer": {
+      "at": "2026-04-01T20:05:00+02:00",
+      "question": "an welchen tagen geh ich nochmal ins gym?",
+      "anyOf": [["montag"], ["mittwoch"], ["freitag"]]
+    }
+  },
+  {
+    "id": "zusammen-05",
+    "category": "zusammenfuehren",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: two different Toms. What belongs to one must not merge into one fact with the other.",
+    "truth": [
+      { "id": "t1", "content": "Tom aus der Arbeit hat Alex sein altes Rennrad verkauft.", "kind": "episode" },
+      { "id": "t2", "content": "Alex' Cousin Tom heiratet im August in Hollerdorf.", "kind": "episode", "validUntil": "2026-08-31" }
+    ],
+    "script": [
+      { "at": "2026-04-01T18:00:00+02:00", "from": "owner", "text": "tom aus der arbeit hat mir sein altes rennrad verkauft" },
+      { "at": "2026-05-10T12:00:00+02:00", "from": "owner", "text": "mein cousin tom heiratet im august in hollerdorf" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "rennrad.*heirat|heirat.*rennrad|rennrad.*cousin|cousin.*rennrad" },
+      { "type": "fact_present", "pattern": "heirat|hochzeit" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-06-01T10:00:00+02:00", "query": "wer hat mir mein fahrrad verkauft", "pattern": "rennrad" }
+    ]
+  },
+  {
+    "id": "update-01",
+    "category": "update",
+    "holdout": false,
+    "note": "Explicit move: the new place of residence replaces the old one.",
+    "truth": [
+      { "id": "t1", "content": "Alex wohnt in Ahrenfeld.", "kind": "identity", "validUntil": "2026-06-10" },
+      { "id": "t2", "content": "Alex wohnt in Kesselbach.", "kind": "identity", "validFrom": "2026-06-10", "supersedes": "t1" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "arbeit", "content": "Alex arbeitet in einem Architekturbüro.", "at": "2026-02-01T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-01T10:00:00+01:00", "from": "owner", "text": "ich wohn in ahrenfeld, falls das mal wichtig is" },
+      { "at": "2026-06-10T19:00:00+02:00", "from": "owner", "text": "so, bin umgezogen, wohn jetzt in kesselbach" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "kesselbach" },
+      { "type": "superseded", "pattern": "ahrenfeld" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-06-20T18:00:00+02:00", "query": "wo wohn ich eigentlich", "pattern": "kesselbach" },
+      { "type": "absence", "at": "2026-06-20T18:00:00+02:00", "query": "wo wohn ich eigentlich", "pattern": "ahrenfeld" }
+    ],
+    "answer": {
+      "at": "2026-06-20T18:05:00+02:00",
+      "question": "in welcher stadt wohn ich nochmal? muss das in nem formular eintragen",
+      "anyOf": [["kesselbach"]],
+      "notContains": ["ahrenfeld"]
+    }
+  },
+  {
+    "id": "update-02",
+    "category": "update",
+    "holdout": false,
+    "note": "Implicit change of employer: no 'nicht mehr', only the first day at the new one.",
+    "truth": [
+      { "id": "t1", "content": "Alex arbeitet bei der Finkel GmbH in der Buchhaltung.", "kind": "identity", "validUntil": "2026-07-09" },
+      { "id": "t2", "content": "Alex arbeitet bei Lorenz & Partner.", "kind": "identity", "validFrom": "2026-07-10", "supersedes": "t1" }
+    ],
+    "script": [
+      { "at": "2026-04-01T08:00:00+02:00", "from": "owner", "text": "ich arbeite bei finkel gmbh in der buchhaltung" },
+      { "at": "2026-07-10T18:30:00+02:00", "from": "owner", "text": "mein erster tag bei lorenz & partner war richtig gut, team is super nett" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "lorenz" },
+      { "type": "superseded", "pattern": "finkel" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-07-20T09:00:00+02:00", "query": "bei welcher firma bin ich angestellt", "pattern": "lorenz" },
+      { "type": "absence", "at": "2026-07-20T09:00:00+02:00", "query": "bei welcher firma bin ich angestellt", "pattern": "finkel" }
+    ],
+    "answer": {
+      "at": "2026-07-20T09:05:00+02:00",
+      "question": "wie heißt nochmal die firma wo ich arbeite? muss das beim arzt angeben",
+      "anyOf": [["lorenz"]],
+      "notContains": ["finkel"]
+    }
+  },
+  {
+    "id": "update-03",
+    "category": "update",
+    "holdout": false,
+    "note": "Preference flips: from vegetarian back to meat. Afterwards no vegetarian filter may apply any more.",
+    "truth": [
+      { "id": "t1", "content": "Alex ist Vegetarier.", "kind": "preference", "validUntil": "2026-06-19" },
+      { "id": "t2", "content": "Alex isst wieder Fleisch.", "kind": "preference", "validFrom": "2026-06-19", "supersedes": "t1" }
+    ],
+    "script": [
+      { "at": "2026-06-01T19:00:00+02:00", "from": "owner", "text": "bin seit januar vegetarier übrigens" },
+      { "at": "2026-06-20T13:00:00+02:00", "from": "owner", "text": "der burger gestern war so krass gut, ich ess jetzt wieder fleisch" }
+    ],
+    "state": [
+      { "type": "superseded", "pattern": "vegetari" },
+      { "type": "fact_present", "pattern": "fleisch" }
+    ],
+    "recall": [
+      { "type": "absence", "at": "2026-07-01T17:00:00+02:00", "query": "worauf muss ich beim essen achten", "pattern": "vegetari" }
+    ],
+    "answer": {
+      "at": "2026-07-01T17:05:00+02:00",
+      "question": "will heut abend grillen, was soll ich einkaufen?",
+      "notContains": ["vegetarier", "vegetarisch lebst", "kein fleisch isst"]
+    }
+  },
+  {
+    "id": "update-04",
+    "category": "update",
+    "holdout": true,
+    "note": "Implicit change of commute: the new bike is only mentioned through the saved ticket.",
+    "truth": [
+      { "id": "t1", "content": "Alex fährt täglich mit der S-Bahn ins Büro.", "kind": "preference", "validUntil": "2026-05-15" },
+      { "id": "t2", "content": "Alex fährt mit dem E-Bike zur Arbeit und hat kein Monatsticket mehr.", "kind": "preference", "validFrom": "2026-05-15", "supersedes": "t1" }
+    ],
+    "script": [
+      { "at": "2026-02-02T07:30:00+01:00", "from": "owner", "text": "fahr jeden tag mit der s-bahn ins büro, nervt manchmal" },
+      { "at": "2026-05-15T18:00:00+02:00", "from": "owner", "text": "seit ich das e-bike hab spar ich mir das monatsticket komplett, geht viel schneller" }
+    ],
+    "state": [
+      { "type": "superseded", "pattern": "mit der s-bahn ins büro" },
+      { "type": "fact_present", "pattern": "e-bike|fahrrad" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-06-01T07:00:00+02:00", "query": "wie komm ich normalerweise ins büro", "pattern": "e-bike|fahrrad" },
+      { "type": "absence", "at": "2026-06-01T07:00:00+02:00", "query": "wie komm ich normalerweise ins büro", "pattern": "s-bahn" }
+    ]
+  },
+  {
+    "id": "update-05",
+    "category": "update",
+    "holdout": true,
+    "note": "Correction the next morning: the name was wrong. The old name must not show up anywhere any more.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Lieblingsrestaurant ist das Goldene Ankerchen in Lindmoor (falsch erinnert).", "kind": "preference" },
+      { "id": "t2", "content": "Alex' Lieblingsrestaurant ist der Rote Anker in Lindmoor.", "kind": "preference", "supersedes": "t1" }
+    ],
+    "script": [
+      { "at": "2026-03-10T20:00:00+01:00", "from": "owner", "text": "mein lieblingsrestaurant is das goldene ankerchen in lindmoor" },
+      { "at": "2026-03-11T09:00:00+01:00", "from": "owner", "text": "ne sorry, das heißt roter anker, hab mich vertan" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "rote[nr]? anker" },
+      { "type": "superseded", "pattern": "ankerchen" }
+    ],
+    "recall": [
+      { "type": "absence", "at": "2026-04-10T18:00:00+02:00", "query": "wo geh ich am liebsten essen", "pattern": "ankerchen" }
+    ],
+    "answer": {
+      "at": "2026-04-10T18:05:00+02:00",
+      "question": "wo gehen wir am liebsten essen? mir fällt der name nicht ein",
+      "anyOf": [["roter anker", "roten anker"]],
+      "notContains": ["ankerchen"]
+    }
+  },
+  {
+    "id": "update-06",
+    "category": "update",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: a second instrument is added, it does not replace the first.",
+    "truth": [
+      { "id": "t1", "content": "Alex spielt Gitarre seit der Schulzeit.", "kind": "preference" },
+      { "id": "t2", "content": "Alex hat mit Klavier angefangen.", "kind": "preference" }
+    ],
+    "script": [
+      { "at": "2026-03-01T20:00:00+01:00", "from": "owner", "text": "ich spiel gitarre seit der schulzeit" },
+      { "at": "2026-05-01T20:00:00+02:00", "from": "owner", "text": "hab jetzt auch mit klavier angefangen, macht laune" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "gitarre" },
+      { "type": "fact_present", "pattern": "klavier" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-06-01T18:00:00+02:00", "query": "welche instrumente spiel ich", "pattern": "gitarre" },
+      { "type": "recall", "at": "2026-06-01T18:00:00+02:00", "query": "welche instrumente spiel ich", "pattern": "klavier" }
+    ]
+  },
+  {
+    "id": "gueltig-01",
+    "category": "gueltigkeit",
+    "holdout": false,
+    "note": "Flat until the end of August, then a new place. Asked before and after the change.",
+    "truth": [
+      { "id": "t1", "content": "Alex wohnt in der Gartenstraße.", "kind": "situation", "validUntil": "2026-08-31" },
+      { "id": "t2", "content": "Alex wohnt in Hollerdorf.", "kind": "identity", "validFrom": "2026-09-01", "supersedes": "t1" }
+    ],
+    "script": [
+      { "at": "2026-07-05T18:00:00+02:00", "from": "owner", "text": "bis ende august wohn ich noch in der gartenstraße, dann gehts nach hollerdorf" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "gartenstr" },
+      { "type": "valid_until", "pattern": "gartenstr", "date": "2026-08-31" },
+      { "type": "fact_present", "pattern": "hollerdorf" },
+      { "type": "valid_from", "pattern": "hollerdorf", "date": "2026-09-01" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-07-20T18:00:00+02:00", "query": "wo wohn ich gerade", "pattern": "gartenstr" },
+      { "type": "recall", "at": "2026-09-10T18:00:00+02:00", "query": "wo wohn ich jetzt", "pattern": "hollerdorf" },
+      { "type": "absence", "at": "2026-09-10T18:00:00+02:00", "query": "wo wohn ich jetzt", "pattern": "gartenstr", "needsV2": true }
+    ],
+    "answer": {
+      "at": "2026-09-10T18:05:00+02:00",
+      "question": "in welchem ort wohn ich gerade? brauch das für die ummeldung",
+      "anyOf": [["hollerdorf"]]
+    }
+  },
+  {
+    "id": "gueltig-02",
+    "category": "gueltigkeit",
+    "holdout": false,
+    "note": "Lasting change that only begins next month. Exactly the case the gate failed on in D13.",
+    "truth": [
+      { "id": "t1", "content": "Alex arbeitet vier Tage pro Woche und hat freitags frei.", "kind": "situation", "validFrom": "2026-06-01" }
+    ],
+    "script": [
+      { "at": "2026-05-20T19:00:00+02:00", "from": "owner", "text": "ab nächstem monat arbeite ich nur noch 4 tage die woche, freitags hab ich dann frei" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "4 tage|vier tage|freitag" },
+      { "type": "valid_from", "pattern": "4 tage|vier tage|freitag", "date": "2026-06-01" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-06-11T18:00:00+02:00", "query": "an welchen tagen arbeite ich", "pattern": "4 tage|vier tage|freitag" }
+    ],
+    "answer": {
+      "at": "2026-06-11T18:05:00+02:00",
+      "question": "kann der handwerker morgen vormittag kommen oder bin ich da im büro?",
+      "anyOf": [["frei"]]
+    }
+  },
+  {
+    "id": "gueltig-03",
+    "category": "gueltigkeit",
+    "holdout": false,
+    "note": "Temporary circumstance. After the end of October it must no longer be at the top in recall.",
+    "truth": [
+      { "id": "t1", "content": "Alex ist in der Prüfungsphase und hat abends wenig Zeit.", "kind": "situation", "validUntil": "2026-10-31" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "hobby", "content": "Alex kocht gern italienisch.", "at": "2026-08-01T10:00:00+02:00" },
+        { "category": "hobby", "content": "Alex geht gern ins Kino.", "at": "2026-08-01T10:00:00+02:00" },
+        { "category": "sport", "content": "Alex geht samstags schwimmen.", "at": "2026-08-01T10:00:00+02:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-09-20T21:00:00+02:00", "from": "owner", "text": "bin bis ende oktober in der prüfungsphase, abends eher wenig zeit für sachen" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "pruef" },
+      { "type": "kind", "pattern": "pruef", "kind": "situation" },
+      { "type": "valid_until", "pattern": "pruef", "date": "2026-10-31" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-10-05T19:00:00+02:00", "query": "hab ich abends gerade zeit für nen kochkurs", "pattern": "pruef" },
+      { "type": "absence", "at": "2026-11-10T19:00:00+01:00", "query": "hab ich abends gerade zeit für nen kochkurs", "pattern": "pruef", "needsV2": true }
+    ]
+  },
+  {
+    "id": "gueltig-04",
+    "category": "gueltigkeit",
+    "holdout": false,
+    "note": "Rental car until the 15th. The owner's own car must not be replaced by it, and the rental car must disappear afterwards.",
+    "truth": [
+      { "id": "t0", "content": "Alex fährt einen grauen Skoda Octavia.", "kind": "identity" },
+      { "id": "t1", "content": "Alex fährt bis zum 15.04.2026 einen weißen Fiat 500 als Leihwagen.", "kind": "situation", "validUntil": "2026-04-15" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "auto", "content": "Alex fährt einen grauen Skoda Octavia.", "at": "2026-03-01T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-04-08T08:00:00+02:00", "from": "owner", "text": "mein auto is bis zum 15. in der werkstatt, fahr solang nen weißen fiat 500 als leihwagen" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "fiat|leihwagen" },
+      { "type": "fact_present", "pattern": "octavia" },
+      { "type": "kind", "pattern": "fiat|leihwagen", "kind": "situation" },
+      { "type": "valid_until", "pattern": "fiat|leihwagen", "date": "2026-04-15" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-04-10T08:00:00+02:00", "query": "mit welchem auto bin ich gerade unterwegs", "pattern": "fiat|leihwagen" },
+      { "type": "recall", "at": "2026-04-25T08:00:00+02:00", "query": "welches auto fahr ich", "pattern": "octavia" },
+      { "type": "absence", "at": "2026-04-25T08:00:00+02:00", "query": "welches auto fahr ich", "pattern": "fiat|leihwagen", "needsV2": true }
+    ],
+    "answer": {
+      "at": "2026-04-25T08:05:00+02:00",
+      "question": "welches auto hab ich nochmal genau? muss die versicherung anrufen",
+      "anyOf": [["octavia", "skoda"]]
+    }
+  },
+  {
+    "id": "gueltig-05",
+    "category": "gueltigkeit",
+    "holdout": true,
+    "note": "Office with a fixed start in the future.",
+    "truth": [
+      { "id": "t1", "content": "Alex ist ab dem 1. Juli 2026 Vorsitzender im Kleingartenverein.", "kind": "identity", "validFrom": "2026-07-01" }
+    ],
+    "script": [
+      { "at": "2026-06-10T19:30:00+02:00", "from": "owner", "text": "ab 1. juli bin ich vorsitzender im kleingartenverein, die wahl war gestern" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "vorsitz" },
+      { "type": "valid_from", "pattern": "vorsitz", "date": "2026-07-01" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-07-15T18:00:00+02:00", "query": "welche ämter hab ich gerade", "pattern": "vorsitz" }
+    ],
+    "answer": {
+      "at": "2026-07-15T18:05:00+02:00",
+      "question": "was für ehrenämter hab ich eigentlich gerade so?",
+      "anyOf": [["vorsitz"]]
+    }
+  },
+  {
+    "id": "gueltig-06",
+    "category": "gueltigkeit",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: an open-ended property gets no made-up expiry date and no start.",
+    "truth": [
+      { "id": "t1", "content": "Alex ist Linkshänder.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-03-03T12:00:00+01:00", "from": "owner", "text": "bin übrigens linkshänder, falls du mal ne maus oder so für mich raussuchst" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "linksh" },
+      { "type": "kind", "pattern": "linksh", "kind": "identity" },
+      { "type": "valid_until", "pattern": "linksh", "date": null },
+      { "type": "valid_from", "pattern": "linksh", "date": null }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-09-01T12:00:00+02:00", "query": "bin ich rechts oder linkshänder", "pattern": "linksh" }
+    ]
+  },
+  {
+    "id": "vergessen-01",
+    "category": "vergessen",
+    "holdout": false,
+    "note": "Loan mentioned, two days later forgotten completely on request. The sentinel is also in the user model and in a summary covering the same day.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat für sein Motorrad einen Kredit über 8000 Euro bei der Wolkenbank.", "kind": "identity", "forgotten": true }
+    ],
+    "seed": {
+      "userModel": {
+        "base": "Alex ist Grafiker und wohnt in Kesselbach.\nEr fährt Motorrad und hat dafür einen Kredit bei der Wolkenbank aufgenommen.\nEr spielt Badminton."
+      },
+      "summaries": [
+        { "windowStart": "2026-05-01T00:00:00+02:00", "windowEnd": "2026-05-01T23:59:00+02:00", "content": "Alex erzählte vom Kredit bei der Wolkenbank über 8000 Euro für das Motorrad." }
+      ]
+    },
+    "script": [
+      { "at": "2026-05-01T20:00:00+02:00", "from": "owner", "text": "hab für das motorrad nen kredit bei der wolkenbank aufgenommen, 8000 auf 4 jahre" },
+      { "at": "2026-05-03T10:00:00+02:00", "from": "owner", "text": "vergiss das mit dem kredit bitte komplett, geht keinen was an", "forget": "Kredit bei der Wolkenbank", "forgetPick": "wolkenbank|kredit" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "wolkenbank|kredit", "includeSuperseded": true },
+      { "type": "sentinel_absent", "sentinel": "wolkenbank" }
+    ],
+    "answer": {
+      "at": "2026-05-10T19:00:00+02:00",
+      "question": "was weißt du eigentlich über meine finanzen?",
+      "notContains": ["wolkenbank", "kredit", "8000"]
+    }
+  },
+  {
+    "id": "vergessen-02",
+    "category": "vergessen",
+    "holdout": false,
+    "note": "Partial deletion: only the flat should go, the parking space stays. Checks over-deletion and ambiguity.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat die Wohnung in der Lindenallee 4 in Brunnau gemietet.", "kind": "identity", "forgotten": true },
+      { "id": "t2", "content": "Alex hat einen Stellplatz in der Tiefgarage gemietet.", "kind": "identity" }
+    ],
+    "seed": {
+      "userModel": {
+        "base": "Alex wohnt zur Miete in der Lindenallee in Brunnau.\nEr arbeitet im Schichtdienst."
+      }
+    },
+    "script": [
+      { "at": "2026-03-01T18:00:00+01:00", "from": "owner", "text": "hab die wohnung in der lindenallee 4 in brunnau gemietet 🎉" },
+      { "at": "2026-03-02T09:00:00+01:00", "from": "owner", "text": "nen stellplatz in der tiefgarage hab ich auch noch dazu genommen" },
+      { "at": "2026-04-10T20:00:00+02:00", "from": "owner", "text": "vergiss bitte, dass ich die wohnung in der lindenallee gemietet hab", "forget": "Wohnung in der Lindenallee", "forgetPick": "lindenallee" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "lindenallee", "includeSuperseded": true },
+      { "type": "fact_present", "pattern": "stellplatz|tiefgarage" },
+      { "type": "sentinel_absent", "sentinel": "lindenallee" }
+    ]
+  },
+  {
+    "id": "vergessen-03",
+    "category": "vergessen",
+    "holdout": false,
+    "note": "Health detail with a made-up medication. The delete request only says 'die Tabletten'.",
+    "truth": [
+      { "id": "t1", "content": "Alex nimmt seit März Zelvaprin gegen Migräne.", "kind": "situation", "forgotten": true }
+    ],
+    "seed": {
+      "userModel": {
+        "base": "Alex hat Migräne und nimmt dagegen Zelvaprin.\nEr trinkt keinen Alkohol."
+      },
+      "summaries": [
+        { "windowStart": "2026-03-15T00:00:00+01:00", "windowEnd": "2026-03-15T23:59:00+01:00", "content": "Alex berichtete, dass er seit März Zelvaprin gegen Migräne nimmt und es gut hilft." }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-15T21:00:00+01:00", "from": "owner", "text": "nehm seit anfang märz zelvaprin gegen meine migräne, hilft echt gut" },
+      { "at": "2026-03-29T11:00:00+02:00", "from": "owner", "text": "vergiss das mit den tabletten bitte wieder", "forget": "Tabletten gegen Migräne", "forgetPick": "zelvaprin|migraene" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "zelvaprin|migraene", "includeSuperseded": true },
+      { "type": "sentinel_absent", "sentinel": "zelvaprin" }
+    ]
+  },
+  {
+    "id": "vergessen-04",
+    "category": "vergessen",
+    "holdout": true,
+    "note": "The ex's name should go, also from the answer to a direct question about it.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Ex heißt Mirella.", "kind": "identity", "forgotten": true }
+    ],
+    "seed": {
+      "userModel": {
+        "base": "Alex ist seit 2025 getrennt, seine Ex heißt Mirella.\nEr spielt Volleyball im Verein."
+      }
+    },
+    "script": [
+      { "at": "2026-02-01T22:00:00+01:00", "from": "owner", "text": "meine ex heißt mirella, falls die mal anruft geh ich nicht ran" },
+      { "at": "2026-02-20T19:00:00+01:00", "from": "owner", "text": "vergiss mirella bitte, will den namen nicht mehr hören", "forget": "Mirella", "forgetPick": "mirella" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "mirella", "includeSuperseded": true },
+      { "type": "sentinel_absent", "sentinel": "mirella" }
+    ],
+    "answer": {
+      "at": "2026-03-01T20:00:00+01:00",
+      "question": "wie hieß nochmal meine ex?",
+      "notContains": ["mirella"]
+    }
+  },
+  {
+    "id": "vergessen-05",
+    "category": "vergessen",
+    "holdout": false,
+    "note": "Forgetting with a supersession chain: first three, then one espresso, then everything gone. The summary only covers the day of the first version.",
+    "truth": [
+      { "id": "t1", "content": "Alex trinkt drei Espresso am Tag.", "kind": "preference", "forgotten": true },
+      { "id": "t2", "content": "Alex trinkt einen Espresso am Tag.", "kind": "preference", "supersedes": "t1", "forgotten": true }
+    ],
+    "seed": {
+      "userModel": {
+        "base": "Alex trinkt viel Kaffee, morgens immer zuerst einen Espresso.\nEr wohnt in Talwies."
+      },
+      "summaries": [
+        { "windowStart": "2026-02-01T00:00:00+01:00", "windowEnd": "2026-02-01T23:59:00+01:00", "content": "Alex trinkt drei Espresso am Tag und will weniger." }
+      ]
+    },
+    "script": [
+      { "at": "2026-02-01T08:00:00+01:00", "from": "owner", "text": "trink grad so 3 espresso am tag, viel zu viel" },
+      { "at": "2026-03-01T08:00:00+01:00", "from": "owner", "text": "bin jetzt runter auf einen espresso am tag 💪" },
+      { "at": "2026-04-01T09:00:00+02:00", "from": "owner", "text": "vergiss das mit dem espresso, komplett", "forget": "Espresso", "forgetPick": "espresso" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "espresso", "includeSuperseded": true },
+      { "type": "sentinel_absent", "sentinel": "espresso" }
+    ]
+  },
+  {
+    "id": "vergessen-06",
+    "category": "vergessen",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: Alex has something forgotten that was never stored. The similar sports fact must not go with it.",
+    "truth": [
+      { "id": "t1", "content": "Alex spielt seit letztem Jahr Schach im Verein in Lindmoor.", "kind": "preference" }
+    ],
+    "script": [
+      { "at": "2026-03-01T19:00:00+01:00", "from": "owner", "text": "spiel seit letztem jahr schach im verein in lindmoor" },
+      { "at": "2026-03-05T19:00:00+01:00", "from": "owner", "text": "vergiss bitte das mit dem tennis", "forget": "Tennis" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "schach" }
+    ]
+  },
+  {
+    "id": "gate-01",
+    "category": "schreibgate",
+    "holdout": false,
+    "note": "Question to Serain about a football result. No fan fact comes of it.",
+    "truth": [
+      { "id": "t1", "content": "Alex fragt nach einem Spielergebnis (kein Fakt über ihn).", "kind": "episode", "notAboutOwner": true }
+    ],
+    "script": [
+      { "at": "2026-04-12T10:00:00+02:00", "from": "owner", "text": "wer hat eigentlich gestern das spiel von eintracht ahrenfeld gewonnen?" },
+      { "at": "2026-04-12T10:01:00+02:00", "from": "serain", "text": "kann ich grad nicht nachschauen, sorry" },
+      { "at": "2026-04-12T10:02:00+02:00", "from": "owner", "text": "ah ok, egal" }
+    ],
+    "state": [
+      { "type": "fact_count", "max": 0 },
+      { "type": "fact_absent", "pattern": "eintracht|fussball|fan" }
+    ]
+  },
+  {
+    "id": "gate-02",
+    "category": "schreibgate",
+    "holdout": false,
+    "note": "One-off request for a formal mail. It must not turn into a general preference for formality.",
+    "truth": [
+      { "id": "t1", "content": "Einmalig förmliche Mail an den Vermieter (keine Vorliebe).", "kind": "episode", "notAboutOwner": true }
+    ],
+    "script": [
+      { "at": "2026-05-05T09:00:00+02:00", "from": "owner", "text": "schreib mir die mail an den vermieter bitte ausnahmsweise mal förmlich, der is da empfindlich" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "foermlich|formell|siezen", "allowIf": "vermieter" }
+    ],
+    "answer": {
+      "at": "2026-05-20T17:00:00+02:00",
+      "question": "schreib mir kurz ne nachricht an meinen kumpel jonas, dass ich heut später komm",
+      "notContains": ["sehr geehrt", "freundlichen grüßen", "freundlichen gruessen"]
+    }
+  },
+  {
+    "id": "gate-03",
+    "category": "schreibgate",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: the same work rule three times over weeks. Here a preference should arise.",
+    "truth": [
+      { "id": "t1", "content": "Alex möchte keine Termine vor 10 Uhr.", "kind": "preference" }
+    ],
+    "script": [
+      { "at": "2026-03-02T09:00:00+01:00", "from": "owner", "text": "bitte keine meetings vor 10, da bin ich nicht zu gebrauchen" },
+      { "at": "2026-03-16T09:30:00+01:00", "from": "owner", "text": "wie gesagt, vor 10 geht bei mir gar nix" },
+      { "at": "2026-04-01T08:45:00+02:00", "from": "owner", "text": "nochmal fürs protokoll: termine bei mir erst ab 10" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "(vor|ab) 10|10 uhr|10:00" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-04-20T08:00:00+02:00", "query": "wann kann ich morgens frühestens einen call legen", "pattern": "(vor|ab) 10|10 uhr|10:00" }
+    ]
+  },
+  {
+    "id": "gate-04",
+    "category": "schreibgate",
+    "holdout": false,
+    "note": "Form of the day over three messages. None of it holds next week.",
+    "truth": [],
+    "script": [
+      { "at": "2026-06-03T08:00:00+02:00", "from": "owner", "text": "bin heut voll platt, hab mies geschlafen" },
+      { "at": "2026-06-03T08:01:00+02:00", "from": "serain", "text": "oh nein, hilft kaffee?" },
+      { "at": "2026-06-03T08:02:00+02:00", "from": "owner", "text": "is schon der zweite 😩" }
+    ],
+    "state": [
+      { "type": "fact_count", "max": 0 }
+    ]
+  },
+  {
+    "id": "gate-05",
+    "category": "schreibgate",
+    "holdout": true,
+    "note": "One-off food request. No favourite pizza comes of it.",
+    "truth": [],
+    "script": [
+      { "at": "2026-05-08T18:00:00+02:00", "from": "owner", "text": "kannst du mir für heut abend ne pizza mit thunfisch raussuchen? hab irgendwie bock drauf" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "thunfisch" }
+    ]
+  },
+  {
+    "id": "gate-06",
+    "category": "schreibgate",
+    "holdout": true,
+    "note": "Thanks and a one-off reminder. Not a fact.",
+    "truth": [],
+    "script": [
+      { "at": "2026-06-10T21:00:00+02:00", "from": "owner", "text": "danke dir! und erinner mich morgen um 8 an den müll" }
+    ],
+    "state": [
+      { "type": "fact_count", "max": 0 }
+    ]
+  },
+  {
+    "id": "gate-07",
+    "category": "schreibgate",
+    "holdout": false,
+    "note": "Explicit \"merk dir\" with a detail that seems trivial on its own. Lost live on 2026-10-02: gate 0.6, extraction 0 facts, Serain had acknowledged with a tapback. The history mentions the same word in a different context.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Testwort ist Zitronenfalter.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-10-02T11:31:00+02:00", "from": "owner", "text": "bin bis ende oktober voll im projekt zitronenfalter eingespannt" },
+      { "at": "2026-10-02T11:31:15+02:00", "from": "serain", "text": "alles klar" },
+      { "at": "2026-10-02T11:37:00+02:00", "from": "owner", "text": "merk dir, mein testwort ist zitronenfalter" },
+      { "at": "2026-10-02T11:37:10+02:00", "from": "serain", "text": "👍" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "testwort" }
+    ]
+  },
+  {
+    "id": "gate-08",
+    "category": "schreibgate",
+    "holdout": false,
+    "note": "\"merk dir\" about a thing that sounds like nothing. The instruction itself makes it worth remembering.",
+    "truth": [
+      { "id": "t1", "content": "Der Ersatzschlüssel für Alex' Fahrradschloss liegt in der blauen Dose im Flur.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-03-04T19:12:00+01:00", "from": "owner", "text": "merk dir mal: der ersatzschlüssel fürs fahrradschloss liegt in der blauen dose im flur" },
+      { "at": "2026-03-04T19:12:20+01:00", "from": "serain", "text": "👍" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "blaue|dose" }
+    ]
+  },
+  {
+    "id": "gate-09",
+    "category": "schreibgate",
+    "holdout": true,
+    "note": "\"merk dir\" for a single appointment: that belongs in reminders and the calendar, not in memory. Counter-check to gate-07 and gate-08.",
+    "truth": [],
+    "script": [
+      { "at": "2026-03-04T19:12:00+01:00", "from": "owner", "text": "merk dir, dass ich morgen um 9 beim friseur bin" },
+      { "at": "2026-03-04T19:12:20+01:00", "from": "serain", "text": "trag ich dir ein" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "friseur" }
+    ]
+  },
+  {
+    "id": "gate-10",
+    "category": "schreibgate",
+    "holdout": false,
+    "negative": true,
+    "note": "A person's birthday, said in passing. A recurring date is not a single appointment and belongs as a fact among the anniversaries.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Schwester Ilka hat am 17. November Geburtstag.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-04-08T20:15:00+02:00", "from": "owner", "text": "meine schwester ilka hat übrigens am 17. november geburtstag, nicht dass ich den wieder verpenn" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "ilka.*(17|november)|(17|november).*ilka" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-10-20T09:00:00+02:00", "query": "wann muss ich ilka gratulieren", "pattern": "november|17\\." }
+    ],
+    "answer": {
+      "at": "2026-10-20T09:05:00+02:00",
+      "question": "wann hat ilka nochmal geburtstag?",
+      "anyOf": [["17"], ["november", "11."]]
+    }
+  },
+  {
+    "id": "gate-11",
+    "category": "schreibgate",
+    "holdout": false,
+    "negative": true,
+    "note": "\"merk dir\" with a date, but an anniversary: recurring, so not a single appointment. Counter-check to gate-09.",
+    "truth": [
+      { "id": "t1", "content": "Alex und Nora sind seit dem 3. Juni 2021 zusammen; der 3. Juni ist ihr Jahrestag.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-05-02T18:40:00+02:00", "from": "owner", "text": "merk dir: nora und ich sind seit dem 3. juni 2021 zusammen, das ist unser jahrestag" },
+      { "at": "2026-05-02T18:40:10+02:00", "from": "serain", "text": "👍" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "jahrestag|(3\\.|03\\.) ?(juni|0?6)" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-05-28T12:00:00+02:00", "query": "was ist anfang juni bei nora und mir", "pattern": "jahrestag|zusammen" }
+    ],
+    "answer": {
+      "at": "2026-05-28T12:05:00+02:00",
+      "question": "wann ist nochmal der jahrestag von nora und mir?",
+      "anyOf": [["3. juni", "3.6", "03.06", "dritten juni", "3. 6"]]
+    }
+  },
+  {
+    "id": "gate-12",
+    "category": "schreibgate",
+    "holdout": true,
+    "note": "A single appointment in which the word birthday appears. Stays an appointment: no fact about the party.",
+    "truth": [],
+    "script": [
+      { "at": "2026-06-11T17:20:00+02:00", "from": "owner", "text": "trag mir bitte samstag um 19 uhr das geburtstagsessen bei tante hertha ein" },
+      { "at": "2026-06-11T17:20:20+02:00", "from": "serain", "text": "steht drin" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "geburtstagsessen|19 uhr|samstag" }
+    ]
+  },
+  {
+    "id": "enthaltung-01",
+    "category": "enthaltung",
+    "holdout": false,
+    "note": "Question about a person who was never mentioned. The friend's name must not serve as the answer.",
+    "truth": [
+      { "id": "t1", "content": "Alex war 2025 in einem Segelkurs und fand ihn großartig.", "kind": "episode" },
+      { "id": "d1", "content": "Alex' beste Freundin heißt Tilda (Ablenker).", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "freunde", "content": "Alex' beste Freundin heißt Tilda.", "at": "2026-01-10T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-01T19:00:00+01:00", "from": "owner", "text": "der segelkurs letztes jahr war echt das beste was ich je gemacht hab" }
+    ],
+    "answer": {
+      "at": "2026-04-01T19:00:00+02:00",
+      "question": "wie hieß nochmal die frau aus dem segelkurs, die mit dem roten boot?",
+      "anyOf": [["@unbekannt"]],
+      "notContains": ["tilda"]
+    }
+  },
+  {
+    "id": "enthaltung-02",
+    "category": "enthaltung",
+    "holdout": false,
+    "note": "False premise: the Golf has been sold. The question acts as if it still existed.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat einen gebrauchten Golf.", "kind": "identity", "validUntil": "2026-05-25" },
+      { "id": "t2", "content": "Alex fährt einen ID.3, der Golf ist verkauft.", "kind": "identity", "validFrom": "2026-05-25", "supersedes": "t1" }
+    ],
+    "script": [
+      { "at": "2026-03-01T12:00:00+01:00", "from": "owner", "text": "hab jetzt endlich nen eigenes auto, nen gebrauchten golf" },
+      { "at": "2026-06-01T18:00:00+02:00", "from": "owner", "text": "der neue id.3 fährt sich mega, den golf hab ich letzte woche verkauft" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "id\\.? ?3" }
+    ],
+    "answer": {
+      "at": "2026-06-20T18:00:00+02:00",
+      "question": "bis wann muss ich den golf eigentlich zum tüv bringen?",
+      "anyOf": [["id.3", "id3", "id 3", "verkauft", "keinen golf", "golf nicht mehr", "golf hast du nicht mehr", "golf ist weg"]]
+    }
+  },
+  {
+    "id": "enthaltung-03",
+    "category": "enthaltung",
+    "holdout": false,
+    "note": "False premise: Alex has not smoked for two years.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat vor zwei Jahren mit dem Rauchen aufgehört.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-01-15T20:00:00+01:00", "from": "owner", "text": "hab vor zwei jahren mit dem rauchen aufgehört und bin echt stolz drauf" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "rauch" }
+    ],
+    "answer": {
+      "at": "2026-03-01T20:00:00+01:00",
+      "question": "wie viele zigaretten rauch ich eigentlich so am tag im schnitt?",
+      "anyOf": [["aufgehört", "rauchst nicht", "rauchst doch nicht", "rauchst gar nicht", "rauchst ja nicht", "nichtraucher", "keine mehr", "nicht mehr"]]
+    }
+  },
+  {
+    "id": "enthaltung-04",
+    "category": "enthaltung",
+    "holdout": true,
+    "note": "Close distractor: the dentist is known, the question is about the GP.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Zahnarzt ist Dr. Brandt in Ahrenfeld.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-02-05T10:00:00+01:00", "from": "owner", "text": "mein zahnarzt is dr. brandt in ahrenfeld, echt gut der mann" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "brandt" }
+    ],
+    "answer": {
+      "at": "2026-04-01T10:00:00+02:00",
+      "question": "wie heißt nochmal mein hausarzt?",
+      "anyOf": [["@unbekannt"]],
+      "notContains": ["hausarzt ist dr. brandt", "hausarzt dr. brandt", "hausarzt ist brandt"]
+    }
+  },
+  {
+    "id": "enthaltung-05",
+    "category": "enthaltung",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: the answer is known, so no 'weiß ich nicht'.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Lieblingsband sind die Nebelkrähen.", "kind": "preference" }
+    ],
+    "script": [
+      { "at": "2026-03-08T21:00:00+01:00", "from": "owner", "text": "meine lieblingsband sind die nebelkrähen, hab alle platten" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "nebelkr" }
+    ],
+    "answer": {
+      "at": "2026-05-01T12:00:00+02:00",
+      "question": "welche band hör ich am liebsten? will mir n shirt bestellen",
+      "anyOf": [["nebelkr"]]
+    }
+  },
+  {
+    "id": "person-01",
+    "category": "personalisierung",
+    "holdout": false,
+    "note": "Implicit personalization: the question about a dinner says nothing about vegan, the answer still has to be.",
+    "truth": [
+      { "id": "t1", "content": "Alex lebt seit drei Jahren vegan.", "kind": "preference" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "essen", "content": "Alex kocht gern asiatisch.", "at": "2026-01-20T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-02-14T19:00:00+01:00", "from": "owner", "text": "bin seit drei jahren vegan, nur so als info" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "vegan" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-04-02T18:30:00+02:00", "query": "was soll ich heute abend kochen", "pattern": "vegan" }
+    ],
+    "answer": {
+      "at": "2026-04-02T18:35:00+02:00",
+      "question": "hast du ne idee für n schnelles abendessen heute?",
+      "anyOf": [["vegan", "tofu", "linsen", "kichererbsen", "bohnen", "tempeh", "pflanzlich"]],
+      "notContains": ["hähnchen", "hackfleisch", "speck", "lachs", "thunfisch", "rindfleisch", "parmesan", "sahne", "schinken"]
+    }
+  },
+  {
+    "id": "person-02",
+    "category": "personalisierung",
+    "holdout": false,
+    "note": "Implicit personalization: getting to an appointment, stored is 'kein Auto, nur Bahn'.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat kein Auto und fährt alles mit der Bahn.", "kind": "preference" },
+      { "id": "t2", "content": "Alex wohnt in Kesselbach.", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "wohnen", "content": "Alex wohnt in Kesselbach.", "at": "2026-02-01T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-10T08:00:00+01:00", "from": "owner", "text": "hab kein auto, fahr eigentlich alles mit der bahn" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "bahn|kein auto" }
+    ],
+    "recall": [
+      { "type": "recall", "at": "2026-05-04T09:00:00+02:00", "query": "wie komm ich nächste woche zu meinem termin in brunnau", "pattern": "bahn|kein auto" }
+    ],
+    "answer": {
+      "at": "2026-05-04T09:05:00+02:00",
+      "question": "muss nächsten dienstag zu nem termin nach brunnau, wie komm ich da am besten hin?",
+      "anyOf": [["bahn", "zug", "regionalbahn", "öffentlich", "öpnv", "bus"]],
+      "notContains": ["mit dem auto", "parkplatz", "parken"]
+    }
+  },
+  {
+    "id": "person-03",
+    "category": "personalisierung",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check misapplication: a cooking question has nothing to do with the train and the place of residence.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat kein Auto und fährt alles mit der Bahn.", "kind": "preference" },
+      { "id": "t2", "content": "Alex wohnt in Kesselbach.", "kind": "identity" }
+    ],
+    "seed": {
+      "facts": [
+        { "category": "wohnen", "content": "Alex wohnt in Kesselbach.", "at": "2026-02-01T10:00:00+01:00" },
+        { "category": "mobilitaet", "content": "Alex hat kein Auto und fährt alles mit der Bahn.", "at": "2026-02-01T10:00:00+01:00" }
+      ]
+    },
+    "script": [
+      { "at": "2026-03-12T19:00:00+01:00", "from": "owner", "text": "danke für den tipp gestern übrigens" }
+    ],
+    "answer": {
+      "at": "2026-04-01T08:00:00+02:00",
+      "question": "wie lange muss ein ei kochen, damit es wachsweich ist?",
+      "notContains": ["bahn", "zug", "kesselbach", "auto"]
+    }
+  },
+  {
+    "id": "person-04",
+    "category": "personalisierung",
+    "holdout": true,
+    "note": "Implicit personalization with weight: getting a cat despite a cat hair allergy.",
+    "truth": [
+      { "id": "t1", "content": "Alex hat eine starke Katzenhaarallergie.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-02-20T20:00:00+01:00", "from": "owner", "text": "hab ne ziemlich heftige katzenhaarallergie, war heut wieder bei freunden mit katze 🤧" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "katze" }
+    ],
+    "answer": {
+      "at": "2026-05-01T18:00:00+02:00",
+      "question": "meine freundin will uns ne katze holen, was meinst du?",
+      "anyOf": [["allerg"]]
+    }
+  },
+  {
+    "id": "urheber-01",
+    "category": "urheberschaft",
+    "holdout": false,
+    "note": "A friend's statement about himself. It must not become a fact about Alex; as a fact about Jonas it would be fine.",
+    "truth": [
+      { "id": "t1", "content": "Jonas zieht nach Talwies und fängt bei der Feuerwehr an.", "kind": "episode", "notAboutOwner": true }
+    ],
+    "script": [
+      { "at": "2026-04-20T19:00:00+02:00", "from": "owner", "text": "mein kumpel jonas meinte gestern, er zieht nach talwies und fängt da bei der feuerwehr an" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "talwies|feuerwehr", "allowIf": "jonas" }
+    ]
+  },
+  {
+    "id": "urheber-02",
+    "category": "urheberschaft",
+    "holdout": false,
+    "note": "Serain's own guess about Alex, Alex dodges. Serain's sentence is not a source.",
+    "truth": [],
+    "script": [
+      { "at": "2026-05-11T22:00:00+02:00", "from": "owner", "text": "puh, langer tag" },
+      { "at": "2026-05-11T22:01:00+02:00", "from": "serain", "text": "klingt so, als wärst du eher so der morgenmensch, der abends einfach durch ist 😄" },
+      { "at": "2026-05-11T22:02:00+02:00", "from": "owner", "text": "haha kann sein" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "morgenmensch|frueh|aufsteh" }
+    ]
+  },
+  {
+    "id": "urheber-03",
+    "category": "urheberschaft",
+    "holdout": true,
+    "note": "Someone else's judgement that Alex contradicts. At most it may be stored that the mother says so.",
+    "truth": [
+      { "id": "t1", "content": "Alex' Mutter hält ihn für unordentlich, er selbst nicht.", "kind": "identity", "notAboutOwner": true }
+    ],
+    "script": [
+      { "at": "2026-03-22T18:00:00+01:00", "from": "owner", "text": "meine mutter sagt immer, ich wär total unordentlich, find ich ehrlich gesagt gar nicht" }
+    ],
+    "state": [
+      { "type": "fact_absent", "pattern": "unordentlich", "allowIf": "mutter" }
+    ]
+  },
+  {
+    "id": "urheber-04",
+    "category": "urheberschaft",
+    "holdout": false,
+    "negative": true,
+    "note": "Counter-check: Alex says something about their own relationship with a third party. That is a fact about Alex.",
+    "truth": [
+      { "id": "t1", "content": "Jonas ist Alex' bester Freund seit der Grundschule.", "kind": "identity" }
+    ],
+    "script": [
+      { "at": "2026-02-02T20:00:00+01:00", "from": "owner", "text": "jonas is übrigens mein bester kumpel seit der grundschule" }
+    ],
+    "state": [
+      { "type": "fact_present", "pattern": "jonas" }
+    ]
+  }
+]

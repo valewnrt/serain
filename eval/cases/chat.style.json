@@ -1,0 +1,402 @@
+[
+  {
+    "id": "stil-gruss-01",
+    "language": "de",
+    "input": "hi",
+    "greeting": true,
+    "note": "Mirror the length: “hi” gets “hi”. No emoji, no introduction."
+  },
+  {
+    "id": "stil-gruss-02",
+    "language": "de",
+    "input": "moin, alles fit? 🙌",
+    "greeting": true,
+    "note": "Greeting with an emoji from Alex. Still none back: never in a greeting."
+  },
+  {
+    "id": "stil-quittung-01",
+    "language": "de",
+    "input": "danke dir",
+    "tapbackSuffices": true,
+    "note": "Thanks. A 👍 is the whole answer, text would be one too many."
+  },
+  {
+    "id": "stil-quittung-02",
+    "language": "de",
+    "input": "ok passt so",
+    "tapbackSuffices": true,
+    "note": "Acknowledgement without a question. Tapback, no sentence, no emoji in the text."
+  },
+  {
+    "id": "stil-emoji-01",
+    "language": "de",
+    "input": "hab den termin komplett verpennt 😩",
+    "note": "Emoji from Alex, so one may come back. Two would be too many."
+  },
+  {
+    "id": "stil-intern-01",
+    "language": "de",
+    "input": "vergiss bitte, dass ich mal gesagt hab ich trink keinen kaffee",
+    "note": "A deletion request. Serain says “deleted it”, not what the tool is called."
+  },
+  {
+    "id": "stil-intern-02",
+    "language": "de",
+    "input": "was hast du dir denn so über mich gemerkt",
+    "note": "Memory on request. The way there has a name, the message doesn't mention it."
+  },
+  {
+    "id": "stil-technik-01",
+    "language": "de",
+    "input": "wie funktionierst du eigentlich technisch? was passiert, wenn ich dir schreibe",
+    "technicalQuestion": true,
+    "infoRequest": true,
+    "note": "An explicit question about the technology. Names are allowed, “I don't know” is not."
+  },
+  {
+    "id": "stil-lang-01",
+    "language": "de",
+    "input": "erklär mir mal in ruhe und ausführlich, was ein vektorindex ist, wie er intern funktioniert und wann man ihn gegenüber einer normalen volltextsuche nimmt",
+    "infoRequest": true,
+    "longAnswer": true,
+    "note": "Explicitly detailed. Belongs in the thread, in several bubbles."
+  },
+  {
+    "id": "stil-nachhaken-01",
+    "language": "de",
+    "history": [
+      {
+        "role": "user",
+        "content": "[voice message] Erinner mich morgen um das Neunerns-Paket."
+      },
+      {
+        "role": "assistant",
+        "content": "\"neunerns-paket\" hab ich akustisch nicht sauber, was meinst du damit?"
+      }
+    ],
+    "input": "ach und mein bruder hat am samstag geburtstag",
+    "notContains": [
+      "paket",
+      "neunerns"
+    ],
+    "note": "Live test 2026-09-20: Serain repeated the same question in three turns. Alex moved on, so Serain moves on too (D23)."
+  },
+  {
+    "id": "stil-widerspruch-01",
+    "language": "de",
+    "speaker": "Event",
+    "input": "Your background task is done: „Wann fährt morgen der erste ICE von Frankfurt nach Berlin?“\nSteps: 6.\nReport: Seite A (bahn-fahrplan.example) nennt als erste Direktverbindung 03:31 Uhr, ICE 698. Seite B (zugauskunft.example) nennt 07:02 Uhr als erste Verbindung. Keine der beiden Seiten ist tagesgenau, die Buchungsstrecke der Bahn war nicht abrufbar.\nWrite Alex the result, short and in your tone. Whatever stayed open or failed, you mention.",
+    "infoRequest": true,
+    "anyOf": [
+      [
+        "widerspr",
+        "uneinig",
+        "nicht einig",
+        "unterschiedlich",
+        "zwei verschiedene",
+        "decken sich nicht",
+        "passt nicht zusammen",
+        "was anderes",
+        "die andere",
+        "eine seite",
+        "eine quelle"
+      ],
+      [
+        "03:31",
+        "3:31"
+      ],
+      [
+        "07:02",
+        "7:02"
+      ]
+    ],
+    "note": "Live test 2026-09-20 (D18): Serain quoted the weaker clue instead of saying that the sources contradict each other. Both times and the contradiction belong in the answer (D23). The event frame is English like every event text; the report and the answer are German, because Alex writes German."
+  },
+  {
+    "id": "stil-default-01",
+    "language": "de",
+    "input": "bin bis ende oktober voll im projekt zitronenfalter eingespannt",
+    "memory": "<facts>\n[arbeit, wer] Die einzigen aktiven Projekte sind Lumen und Kassenbuch. Alles andere in Alex' dev-Ordner ist Archiv.\n[arbeitsweise, wer] Alex bewegt sich schnell und knapp. Wenn die Richtung klar ist, will er keine Rückfragen mehr.\n</facts>",
+    "notContains": [
+      "bis wann",
+      "wann genau",
+      "wie lange"
+    ],
+    "note": "Live test 2026-10-02: Serain asked “until when exactly?” although the end stood in the message. Memory said only two projects are active; the contradiction triggered the question and then pinned it on the wrong thing. A question about something that is already there is the most expensive kind (W20)."
+  },
+  {
+    "id": "stil-erinnerung-01",
+    "language": "de",
+    "input": "erinner mich morgen um 9 ans paket",
+    "reminderText": {
+      "minWords": 3,
+      "notStartsWith": [
+        "erinnerung",
+        "reminder",
+        "wegen"
+      ]
+    },
+    "note": "Live test 2026-09-20: reminders came as a bare keyword (“neustart-test”). A sentence that stands on its own, without “Reminder:” in front (D23). Run before: “wegen dem paket”, after: “denk ans paket”. The check is a heuristic (word count, opener), not a judgement of the sentence."
+  },
+  {
+    "id": "stil-korrektur-01",
+    "language": "de",
+    "speaker": "Event",
+    "history": [
+      {
+        "role": "user",
+        "content": "wie lang brauch ich morgen früh mit dem auto nach bonn"
+      },
+      {
+        "role": "assistant",
+        "content": "so 25 minuten über die a565, morgens eher 35"
+      }
+    ],
+    "input": "Alex put 👎 on your message: “so 25 minuten über die a565, morgens eher 35”\nThat is a correction signal, not an abort. Don't say the same thing again in other words: your\nsecond attempt must contain something new. If you see in the history what was wrong, correct it with\nreply_in_thread. If you don't see it, ask in one sentence what didn't fit. The 👎 came just now,\neven if the conversation has moved on since: silence would look to Alex as if you had\noverlooked them. The turn ends without a message only if the message was a reminder.",
+    "notContains": [
+      "a565",
+      "25 min",
+      "35"
+    ],
+    "anyOf": [
+      [
+        "?",
+        "geraten",
+        "geschätzt",
+        "schätz"
+      ]
+    ],
+    "note": "W24, D24: a model likes to apologise for a 👎 and then say the same thing again. Here the history doesn't show what was wrong; right is a short question back, not a repetition of the numbers. The input text is feedbackPrompt() from src/agent/feedback.ts, verbatim. Addendum 2026-09-20: an honest classification (“that was a guess”) is just as right as a question."
+  },
+  {
+    "id": "stil-korrektur-02",
+    "language": "de",
+    "speaker": "Event",
+    "history": [
+      {
+        "role": "user",
+        "content": "wie lang brauch ich morgen früh mit dem auto nach potsdam"
+      },
+      {
+        "role": "assistant",
+        "content": "ca 18 km, ohne verkehr ~22 min. mit berufsverkehr keine harte zahl kriegbar, rechne mit 35"
+      },
+      {
+        "role": "user",
+        "content": "lass uns 10 uhr sagen"
+      },
+      {
+        "role": "assistant",
+        "content": "passt, erinnerung zum losfahren steht für 9 uhr"
+      }
+    ],
+    "input": "Alex put 👎 on your message: “ca 18 km, ohne verkehr ~22 min. mit berufsverkehr keine harte zahl kriegbar, rechne mit 35”\nThat is a correction signal, not an abort. Don't say the same thing again in other words: your\nsecond attempt must contain something new. If you see in the history what was wrong, correct it with\nreply_in_thread. If you don't see it, ask in one sentence what didn't fit. The 👎 came just now,\neven if the conversation has moved on since: silence would look to Alex as if you had\noverlooked them. The turn ends without a message only if the message was a reminder.",
+    "notContains": [
+      "22 min",
+      "18 km"
+    ],
+    "note": "Live test 2026-09-20 (D24, addendum): the conversation had already moved on to the appointment, Serain took the 👎 as outdated and stayed silent. For Alex that looked like being overlooked. Expected is a message, not a repetition of the numbers. The anyOf check only requires that a message went out at all.",
+    "anyOf": [
+      [
+        "e",
+        "a",
+        "i",
+        "?"
+      ]
+    ]
+  },
+  {
+    "id": "stil-form-01",
+    "language": "de",
+    "input": "lohnt sich die bahncard 50 für mich wenn ich zweimal im monat für 120 euro hin und zurück nach berlin fahr?",
+    "note": "V8 from the audit of 2026-10-02 (the first 30 % carry the information). Candidate for the next style round, not in the style block: only measures whether the answer comes first.",
+    "infoRequest": true,
+    "firstLineAnyOf": [
+      [
+        "ja",
+        "lohnt",
+        "lohnt sich",
+        "nein",
+        "rechnet sich",
+        "klar",
+        "auf jeden fall",
+        "eher nicht",
+        "knapp"
+      ]
+    ]
+  },
+  {
+    "id": "en-gruss-01",
+    "language": "en",
+    "input": "hey",
+    "greeting": true,
+    "note": "English owner. Mirror the length: “hey” gets “hey”. No emoji, no introduction."
+  },
+  {
+    "id": "en-quittung-01",
+    "language": "en",
+    "input": "thanks, that's perfect",
+    "tapbackSuffices": true,
+    "note": "English owner. Thanks: a 👍 is the whole answer."
+  },
+  {
+    "id": "en-emoji-01",
+    "language": "en",
+    "input": "totally slept through my dentist appointment 😩",
+    "note": "English owner. Emoji from Alex, so one may come back, two would be too many. No assistant sound (“sorry to hear that”, “let me know if”)."
+  },
+  {
+    "id": "en-erinnerung-01",
+    "language": "en",
+    "input": "remind me tomorrow at 9 about the parcel",
+    "reminderText": {
+      "minWords": 3,
+      "notStartsWith": [
+        "reminder",
+        "about",
+        "re:"
+      ]
+    },
+    "note": "English owner. The reminder is a sentence that stands on its own (D23), in English."
+  },
+  {
+    "id": "en-nachhaken-01",
+    "language": "en",
+    "history": [
+      {
+        "role": "user",
+        "content": "[voice message] Remind me tomorrow about the ninerns parcel."
+      },
+      {
+        "role": "assistant",
+        "content": "didn't catch \"ninerns parcel\", what do you mean?"
+      }
+    ],
+    "input": "oh and my brother's birthday is on saturday",
+    "notContains": [
+      "parcel",
+      "ninerns"
+    ],
+    "note": "English owner. An open question is asked once; Alex moved on, so Serain moves on too (D23)."
+  },
+  {
+    "id": "en-technik-01",
+    "language": "en",
+    "input": "how do you actually work technically? what happens when i text you?",
+    "technicalQuestion": true,
+    "infoRequest": true,
+    "note": "English owner. An explicit question about the technology: names are allowed, “I don't know” is not."
+  },
+  {
+    "id": "en-korrektur-01",
+    "language": "en",
+    "speaker": "Event",
+    "history": [
+      {
+        "role": "user",
+        "content": "how long does it take me to drive to the airport tomorrow morning"
+      },
+      {
+        "role": "assistant",
+        "content": "about 25 min on the highway, more like 35 in the morning"
+      }
+    ],
+    "input": "Alex put 👎 on your message: “about 25 min on the highway, more like 35 in the morning”\nThat is a correction signal, not an abort. Don't say the same thing again in other words: your\nsecond attempt must contain something new. If you see in the history what was wrong, correct it with\nreply_in_thread. If you don't see it, ask in one sentence what didn't fit. The 👎 came just now,\neven if the conversation has moved on since: silence would look to Alex as if you had\noverlooked them. The turn ends without a message only if the message was a reminder.",
+    "notContains": [
+      "25 min",
+      "35"
+    ],
+    "anyOf": [
+      [
+        "?",
+        "guess",
+        "estimate",
+        "rough"
+      ]
+    ],
+    "note": "English owner, W24, D24: after a 👎 a short question back or an honest classification, not the same numbers again. The input text is feedbackPrompt() from src/agent/feedback.ts, verbatim."
+  },
+  {
+    "id": "en-form-01",
+    "language": "en",
+    "input": "is a railcard worth it if i go to the city twice a month for 60 bucks return?",
+    "infoRequest": true,
+    "firstLineAnyOf": [
+      [
+        "yes",
+        "worth",
+        "no",
+        "pays off",
+        "not really",
+        "barely",
+        "probably",
+        "definitely"
+      ]
+    ],
+    "note": "English owner. V8: the answer comes first, in the first sentence."
+  },
+  {
+    "id": "sprache-tr-01",
+    "language": "tr",
+    "history": [
+      {
+        "role": "user",
+        "content": "kannst du mir morgen früh sagen, wie das wetter wird"
+      },
+      {
+        "role": "assistant",
+        "content": "mach ich, kommt um 7"
+      }
+    ],
+    "input": "bu arada yarın akşam annemle yemeğe çıkıyoruz, sence saat kaçta rezervasyon yapalım?",
+    "note": "Language switch: Alex wrote German, now writes Turkish. Serain answers in Turkish, without being asked to, and without commenting on the switch."
+  },
+  {
+    "id": "sprache-es-01",
+    "language": "es",
+    "history": [
+      {
+        "role": "user",
+        "content": "hast du gestern noch was von der werkstatt gehört?"
+      },
+      {
+        "role": "assistant",
+        "content": "nein, noch nichts"
+      }
+    ],
+    "input": "oye, ¿me recuerdas mañana a las 8 que tengo que llamar al dentista?",
+    "reminderText": {
+      "minWords": 3,
+      "notStartsWith": [
+        "recordatorio",
+        "erinnerung",
+        "reminder"
+      ]
+    },
+    "note": "Language switch to Spanish: the answer and the reminder text are Spanish, even though the history is German."
+  },
+  {
+    "id": "sprache-en-01",
+    "language": "en",
+    "history": [
+      {
+        "role": "user",
+        "content": "danke, passt"
+      },
+      {
+        "role": "assistant",
+        "content": "👍"
+      }
+    ],
+    "input": "quick one, is it rude to text someone back after three days?",
+    "infoRequest": true,
+    "note": "Language switch to English after a German history: Serain follows the latest message, not the history or the starting language."
+  },
+  {
+    "id": "sprache-mix-01",
+    "language": "de",
+    "input": "kannst du mir kurz sagen, was \"to be on the same page\" genau heißt?",
+    "infoRequest": true,
+    "note": "Mixed message: German with an English phrase. The main language is German, so the answer is German."
+  }
+]
