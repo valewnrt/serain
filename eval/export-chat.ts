@@ -12,7 +12,7 @@ import type { ChatCase, HistoryTurn } from "./types.js";
  * **This file never goes into the repo.** It ends up under `data/eval/`, and `data/`
  * is in `.gitignore`. The style comparison is only worth something if it runs on
  * the owner's real language; their messages still have no place in the repo
- * (CLAUDE.md: no real chat content).
+ * (AGENTS.md: no real chat content).
  *
  *   pnpm eval:export-chat            # last 30 turns
  *   pnpm eval:export-chat --limit 50

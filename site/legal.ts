@@ -3,7 +3,7 @@ import { MAINTAINER } from "./content/site.js";
 
 /**
  * The imprint's contact data for the build (site/build.ts). Address, phone,
- * email and VAT ID never go into the repository (CLAUDE.md, git): they live in
+ * email and VAT ID never go into the repository (AGENTS.md, git): they live in
  * `.dev.vars`, where the pre-commit secret scan also guards them. The name is
  * the maintainer's, already public in site/content/site.ts.
  *

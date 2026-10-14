@@ -6,6 +6,8 @@ Before you start, read the README sections on [costs](../README.md#costs) and [l
 
 Plan about two hours for part A. Most of it is waiting for accounts and for the first deploy (it builds the sandbox image on the server).
 
+`pnpm setup:check` shows where you stand at any point: it checks every step of part A on your machine and on the server, changes nothing, never shows a secret, and names the next step with its section here. Run it after each step. If a coding agent helps you set up, it follows [AGENTS.md](../AGENTS.md) and works with `pnpm setup:check --json`.
+
 ## Contents
 
 - [A1. Prerequisites](#a1-prerequisites)
@@ -58,7 +60,7 @@ cp .env.example .dev.vars
 chmod 600 .dev.vars
 ```
 
-`.dev.vars` is gitignored and holds every value on your machine. Every variable the code reads is explained in [`.env.example`](../.env.example), grouped and marked required or optional. Fill in the owner section now:
+`.dev.vars` is gitignored and holds every value on your machine. Type the values in yourself; never paste them into a chat with a model. Every variable the code reads is explained in [`.env.example`](../.env.example), grouped and marked required or optional. Fill in the owner section now:
 
 ```ini
 OWNER_NAME=Alex                # required: how Serain addresses you
@@ -472,7 +474,8 @@ If the web interface changed, also run `pnpm web:deploy`. If the companion chang
 
 | Symptom | Cause and fix |
 |---|---|
-| Service exits at startup naming a missing `Env` variable | A required variable is not set in `/etc/serain/serain.env`. Compare with `.env.example`. |
+| Anything, before you dig in | `pnpm setup:check` checks every step of part A and names the first one that is off. |
+| Service exits at startup naming a missing `Env` variable | A required variable is not set in `/etc/serain/serain.env`. `pnpm setup:check` lists what is missing on the server and what differs from `.dev.vars`. |
 | Messages from Serain fail with "Target not allowed" | A shared Photon line may only write after you wrote to it. Text the number once. Also after Photon changes the number. |
 | You get every answer twice | Two processes are connected to Photon (usually `pnpm dev` locally while the server runs). Stop one. |
 | Service exits right after start, log says Photon rejects the credentials | Wrong or revoked `PHOTON_PROJECT_ID`/`PHOTON_PROJECT_SECRET`. Serain exits on purpose instead of retrying forever. |

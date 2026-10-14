@@ -9,7 +9,7 @@ import { pgcrypto } from "@electric-sql/pglite/contrib/pgcrypto";
  * The migrations, actually executed once.
  *
  * `0001_core.sql` has run on Supabase since phase 0, but `0002` and `0003` had
- * never seen a Postgres until this point: they were read, not checked. CLAUDE.md
+ * never seen a Postgres until this point: they were read, not checked. AGENTS.md
  * asks for "repro before applying", and a syntax error in a migration would
  * otherwise only show up on the one database there is.
  *

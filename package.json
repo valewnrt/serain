@@ -34,6 +34,7 @@
     "integration": "tsx scripts/integration.ts",
     "connector": "tsx scripts/connector.ts",
     "db:password": "tsx scripts/server.ts db-password",
+    "setup:check": "tsx scripts/setup-check.ts",
     "browse:bench": "tsx scripts/browse-bench.ts",
     "eval": "tsx eval/cli.ts",
     "eval:rank": "tsx eval/cli.ts rank",

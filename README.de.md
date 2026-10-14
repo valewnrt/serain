@@ -103,7 +103,7 @@ Diese Software wird ohne jede Gewährleistung bereitgestellt, wie in den Abschni
 
 ## Schnellstart
 
-Die vollständige Anleitung in der Reihenfolge der Abhängigkeiten steht in [docs/SETUP.md](docs/SETUP.md) (Englisch). Kurz:
+Die vollständige Anleitung in der Reihenfolge der Abhängigkeiten steht in [docs/SETUP.md](docs/SETUP.md) (Englisch); `pnpm setup:check` zeigt bei jedem Schritt, wo du stehst und was als Nächstes kommt. Ein Coding-Agent wie Claude Code oder Codex kann dich durchführen: Er folgt [AGENTS.md](AGENTS.md), und deine Schlüssel bleiben bei dir. Kurz:
 
 1. Supabase-Projekt anlegen und `supabase/migrations/` mit `psql` anwenden.
 2. Photon-Projekt anlegen (iMessage, Free) und einen Anthropic-API-Schlüssel erzeugen.

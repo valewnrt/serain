@@ -103,7 +103,7 @@ This software is provided "as is", without warranty of any kind, as stated in se
 
 ## Quickstart
 
-The full guide, in dependency order, is [docs/SETUP.md](docs/SETUP.md). In short:
+The full guide, in dependency order, is [docs/SETUP.md](docs/SETUP.md); `pnpm setup:check` shows at every step where you stand and what comes next. A coding agent such as Claude Code or Codex can walk you through it: it follows [AGENTS.md](AGENTS.md), and your keys stay with you. In short:
 
 1. Create a Supabase project and apply `supabase/migrations/` with `psql`.
 2. Create a Photon project (iMessage, Free plan) and an Anthropic API key.

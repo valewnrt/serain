@@ -1,5 +1,5 @@
 /**
- * Secret scan before every commit (CLAUDE.md, git workflow). Runs as
+ * Secret scan before every commit (AGENTS.md, git workflow). Runs as
  * `.githooks/pre-commit`; set up once per checkout with
  *
  *   git config core.hooksPath .githooks

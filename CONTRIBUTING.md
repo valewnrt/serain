@@ -2,7 +2,7 @@
 
 Thanks for your interest. Serain is a self-hosted personal agent for exactly one owner, reachable over iMessage. Contributions that make it safer, more reliable, easier to set up or better at its job are welcome.
 
-Before you start, read [README.md](README.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [CLAUDE.md](CLAUDE.md). CLAUDE.md holds the working rules for humans and AI coding agents alike; the security rules there are not negotiable.
+Before you start, read [README.md](README.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [AGENTS.md](AGENTS.md). AGENTS.md holds the working rules for humans and AI coding agents alike (Claude Code reads it through `CLAUDE.md`); the security rules there are not negotiable.
 
 ## Languages
 
