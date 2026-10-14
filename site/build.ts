@@ -4,8 +4,10 @@ import { copyFileSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSy
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
+import { setting } from "../scripts/dev-vars.js";
 import { renderSite } from "./content/render.js";
 import { LANGS, type Lang } from "./content/site.js";
+import { readImprint } from "./legal.js";
 import { ogFonts, renderOg } from "./og.js";
 
 /**
@@ -14,6 +16,9 @@ import { ogFonts, renderOg } from "./og.js";
  * serif and the photographs.
  * Files under `assets/` carry the hash of their content and stay cached for a
  * year (site/worker/worker.ts).
+ *
+ * `--release` (pnpm site:deploy) refuses to build without the imprint's
+ * contact data in `.dev.vars` (site/legal.ts).
  */
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = join(here, "dist");
@@ -82,6 +87,7 @@ const files = renderSite({
   night960: image("night-960.webp"),
   og,
   updated,
+  imprint: readImprint(setting, process.argv.includes("--release")),
   logo(file) {
     const path = logos.get(file);
     if (!path) throw new Error(`site/images/logos has no ${file}.`);

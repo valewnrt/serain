@@ -118,7 +118,7 @@ async function deploy(): Promise<void> {
   const live = await get(`${SITE_ORIGIN}/sitemap.xml`);
   const before = live?.ok ? lastmods(await live.text()) : new Map<string, string>();
   const cf = cloudflare();
-  execFileSync("pnpm", ["-s", "site:build"], { cwd: ROOT, stdio: "inherit" });
+  execFileSync("pnpm", ["-s", "site:build", "--release"], { cwd: ROOT, stdio: "inherit" });
   execFileSync("pnpm", ["exec", "wrangler", "deploy", "-c", "site/wrangler.toml"], {
     cwd: ROOT,
     stdio: "inherit",

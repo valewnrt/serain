@@ -313,6 +313,8 @@ export const T = {
   footerArchitecture: { en: "Architecture", de: "Architektur" },
   footerSecurity: { en: "Security policy", de: "Sicherheitsrichtlinie" },
   footerLegal: { en: "Legal notes", de: "Rechtliches" },
+  footerImprint: { en: "Imprint", de: "Impressum" },
+  footerPrivacy: { en: "Privacy", de: "Datenschutz" },
   trademark: {
     en: "iMessage is a trademark of Apple Inc. Serain is not affiliated with Apple. Logos belong to their owners. Conversations on this page are illustrations.",
     de: "iMessage ist eine Marke von Apple Inc. Serain steht in keiner Verbindung zu Apple. Logos gehören ihren Inhabern. Die Chats auf dieser Seite sind Illustrationen.",

@@ -21,7 +21,7 @@ export const LANGS = ["en", "de"] as const;
 export type Lang = (typeof LANGS)[number];
 export type L = Record<Lang, string>;
 
-export type Page = "home" | "connectors" | "connector" | "submit" | "notFound";
+export type Page = "home" | "connectors" | "connector" | "submit" | "legal" | "notFound";
 
 /** Path of a page in a language: English at the root, German under /de/. */
 export function pathOf(page: "home" | "connectors", lang: Lang): string {
@@ -34,6 +34,10 @@ export const connectorPath = (id: string, lang: Lang) => `${pathOf("connectors",
 
 /** Path of the page to submit a connector; `submit` is therefore no connector id (site/content/directory.ts). */
 export const submitPath = (lang: Lang) => `${pathOf("connectors", lang)}submit/`;
+
+/** The imprint and the privacy notice (site/content/legal.ts), under the names readers of each language look for. */
+export const imprintPath = (lang: Lang) => (lang === "en" ? "/imprint/" : `/${lang}/impressum/`);
+export const privacyPath = (lang: Lang) => (lang === "en" ? "/privacy/" : `/${lang}/datenschutz/`);
 
 /** The Markdown twin of a page for agents (site/content/markdown.ts), next to its `index.html`. */
 export const markdownPath = (path: string) => `${path}index.md`;

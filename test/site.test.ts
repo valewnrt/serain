@@ -5,6 +5,7 @@ import { BUILT_IN_CONNECTORS } from "../src/connectors/catalog.js";
 import type { CommunityConnector } from "../site/content/community.js";
 import { directory } from "../site/content/directory.js";
 import { renderSite, SUBMIT_FIELDS } from "../site/content/render.js";
+import { IMPRINT_VARS, readImprint } from "../site/legal.js";
 import { CONNECTOR_TEMPLATE, INDEXNOW_KEY } from "../site/content/site.js";
 import { T } from "../site/content/text.js";
 import { prefersMarkdown } from "../site/worker/accept.js";
@@ -22,6 +23,7 @@ const ASSETS = {
   og: { en: "/assets/og-en.jpg", de: "/assets/og-de.jpg" },
   logo: (file: string) => `/assets/${file}`,
   updated: "2026-10-14",
+  imprint: { name: "Alex Example", street: "Examplestreet 1", city: "12345 Exampletown", phone: "+49 30 1234567", email: "alex@example.com", vatId: "DE000000000" },
 };
 const pages = renderSite(ASSETS);
 
@@ -73,7 +75,8 @@ describe("serain.si pages (D65)", () => {
     const ids = directory().map((listing) => listing.id);
     const perLang = ["index.html", "connectors/index.html", "connectors/submit/index.html", ...ids.map((id) => `connectors/${id}/index.html`)];
     const withTwins = perLang.flatMap((path) => [path, path.replace(/index\.html$/, "index.md")]);
-    const files = ["404.html", "robots.txt", "sitemap.xml", "llms.txt", ".well-known/security.txt", `${INDEXNOW_KEY}.txt`, ...withTwins, ...withTwins.map((path) => `de/${path}`)];
+    const legal = ["imprint/", "privacy/", "de/impressum/", "de/datenschutz/"].flatMap((path) => [`${path}index.html`, `${path}index.md`]);
+    const files = ["404.html", "robots.txt", "sitemap.xml", "llms.txt", ".well-known/security.txt", `${INDEXNOW_KEY}.txt`, ...withTwins, ...withTwins.map((path) => `de/${path}`), ...legal];
     expect(Object.keys(pages).sort()).toEqual(files.sort());
     expect(pages["index.html"]).toContain('<html lang="en">');
     expect(pages["de/index.html"]).toContain('<html lang="de">');
@@ -134,6 +137,47 @@ describe("serain.si pages (D65)", () => {
       for (const raw of ["<img src=x", "<script>alert", "<b>x"]) expect(page).not.toContain(raw);
     }
     expect(site["connectors/todo/index.html"]).toContain("&lt;b&gt;x&lt;/b&gt;");
+  });
+});
+
+describe("serain.si imprint and privacy notice", () => {
+  it("links both from every page's footer, in the page's language", () => {
+    for (const [path, content] of Object.entries(pages).filter(([file]) => file.endsWith(".html"))) {
+      const [imprint, privacy] = path.startsWith("de/") ? ["/de/impressum/", "/de/datenschutz/"] : ["/imprint/", "/privacy/"];
+      expect(content, path).toContain(`<a href="${imprint}">`);
+      expect(content, path).toContain(`<a href="${privacy}">`);
+    }
+  });
+
+  it("shows the contact data from the build in the page and its twin, escaped", () => {
+    for (const path of ["imprint/", "de/impressum/"]) {
+      for (const file of [`${path}index.html`, `${path}index.md`]) {
+        for (const value of Object.values(ASSETS.imprint)) expect(pages[file], file).toContain(value);
+      }
+      expect(pages[`${path}index.html`]).toContain('<a href="tel:+49301234567">+49 30 1234567</a>');
+      expect(pages[`${path}index.html`]).toContain('<a href="mailto:alex@example.com">alex@example.com</a>');
+    }
+    for (const path of ["privacy/index.html", "de/datenschutz/index.html"]) {
+      expect(pages[path]).toContain("<address>Alex Example<br>Examplestreet 1<br>12345 Exampletown<br>");
+    }
+    const hostile = renderSite({ ...ASSETS, imprint: { ...ASSETS.imprint, street: "<img src=x>" } });
+    expect(hostile["imprint/index.html"]).toContain("&lt;img src=x&gt;");
+    expect(hostile["imprint/index.html"]).not.toContain("<img src=x>");
+  });
+
+  it("switches language between imprint and Impressum, privacy and Datenschutz", () => {
+    expect(pages["imprint/index.html"]).toContain('href="/de/impressum/" hreflang="de"');
+    expect(pages["de/datenschutz/index.html"]).toContain('href="/privacy/" hreflang="en"');
+  });
+
+  it("takes address and contact data only from .dev.vars and refuses a release without them", () => {
+    const vars: Record<string, string> = { [IMPRINT_VARS.street]: "Examplestreet 1", [IMPRINT_VARS.city]: "12345 Exampletown" };
+    const setting = (name: string) => vars[name] ?? "";
+    expect(() => readImprint(setting, true)).toThrow(/SITE_IMPRINT_PHONE, SITE_IMPRINT_EMAIL, SITE_IMPRINT_VAT_ID/);
+    const draft = readImprint(setting, false);
+    expect(draft).toMatchObject({ street: "Examplestreet 1", phone: "SITE_IMPRINT_PHONE", vatId: "SITE_IMPRINT_VAT_ID" });
+    const full: Record<string, string> = { ...vars, [IMPRINT_VARS.phone]: "+49 30 1234567", [IMPRINT_VARS.email]: "alex@example.com", [IMPRINT_VARS.vatId]: "DE000000000" };
+    expect(readImprint((name) => full[name] ?? "", true)).toMatchObject({ city: "12345 Exampletown", email: "alex@example.com" });
   });
 });
 

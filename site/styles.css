@@ -645,6 +645,14 @@ code, pre { font-family: var(--mono); }
 @media (max-width: 559px) { .tools tr { display: grid; grid-template-columns: 1fr auto; } .tools td { border: 0; } .tools td:first-child { grid-column: 1 / -1; padding-bottom: 0; border-top: 1px solid var(--line); } .tools td + td { padding-left: 0; } .tools tr:last-child td { border-bottom: 0; } }
 .note { margin-top: 48px; padding: 16px 18px; border: 1px solid var(--line-2); border-radius: var(--r-lg); font-size: var(--text-sm); color: var(--fg-2); }
 .related { padding: 96px 0; }
+
+/* ---------------------------------------------------------------- imprint and privacy */
+
+.legal-head { padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+.legal { padding-top: 56px; padding-bottom: 120px; }
+.legal address { margin-top: 10px; font-style: normal; color: var(--fg-2); }
+.legal p { overflow-wrap: anywhere; }
+.legal p a { color: var(--fg); }
 .related-title { font-size: var(--text-lg); letter-spacing: -0.02em; }
 
 /* ---------------------------------------------------------------- submit a connector */

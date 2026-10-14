@@ -3,9 +3,10 @@ import { COMMUNITY, type CommunityConnector } from "./community.js";
 import { CATEGORY, directory, type Group, type Listing, type Tool } from "./directory.js";
 import { llmsTxt, robotsTxt, securityTxt, sitemapXml, type Where as Address } from "./crawlers.js";
 import { esc } from "./html.js";
-import { connectorMarkdown, connectorsMarkdown, homeMarkdown, submitMarkdown, type MarkdownMeta } from "./markdown.js";
+import { imprintPage, privacyPage, type Imprint, type LegalPage } from "./legal.js";
+import { connectorMarkdown, connectorsMarkdown, homeMarkdown, legalMarkdown, submitMarkdown, type MarkdownMeta } from "./markdown.js";
 import { directoryGraph, homeGraph, jsonLd, subpageGraph, type Node, type PageMeta } from "./schema.js";
-import { CONNECTOR_TEMPLATE, connectorPath, INDEXNOW_KEY, ISSUE_NEW, markdownPath, submitPath, LANGS, pathOf, REPO, repoFile, SITE_ORIGIN, type L, type Lang, type Page } from "./site.js";
+import { CONNECTOR_TEMPLATE, connectorPath, imprintPath, INDEXNOW_KEY, ISSUE_NEW, markdownPath, privacyPath, submitPath, LANGS, pathOf, REPO, repoFile, SITE_ORIGIN, type L, type Lang, type Page } from "./site.js";
 import { access, actsOf, T } from "./text.js";
 
 export { esc };
@@ -31,6 +32,8 @@ export interface Assets {
   logo(file: string): string;
   /** Day the site's content last changed (YYYY-MM-DD, from git in site/build.ts): the sitemap's lastmod and the pages' dateModified. */
   updated: string;
+  /** Contact data for the imprint and the privacy notice, from `.dev.vars` (site/legal.ts). */
+  imprint: Imprint;
 }
 
 /** The text in the language, or English with a `lang` mark when there is no translation (community entries). */
@@ -140,6 +143,8 @@ function footer(lang: Lang): string {
       <a href="${repoFile("docs/ARCHITECTURE.md")}">${T.footerArchitecture[lang]}</a>
       <a href="${repoFile("SECURITY.md")}">${T.footerSecurity[lang]}</a>
       <a href="${readme(lang)}#${lang === "en" ? "legal" : "rechtliches"}">${T.footerLegal[lang]}</a>
+      <a href="${imprintPath(lang)}">${T.footerImprint[lang]}</a>
+      <a href="${privacyPath(lang)}">${T.footerPrivacy[lang]}</a>
     </nav>
   </div>
   <p class="wrap trademark">${T.trademark[lang]}</p>
@@ -622,6 +627,37 @@ function connectorPage(listing: Listing, lang: Lang, assets: Assets, listings: r
   return shell(lang, "connector", (code) => connectorPath(listing.id, code), assets, connectorTitle(listing, lang), connectorDescription(listing, lang), main, graph);
 }
 
+/** A paragraph of the legal pages (site/content/legal.ts): links, **strong** and `code`, after escaping. */
+const legalText = (text: string) =>
+  esc(text)
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>");
+
+function legal(lang: Lang, where: Address, assets: Assets, page: LegalPage): string {
+  const sections = page.sections
+    .map((section, index) => {
+      const address = section.address ? `<address>${section.address.map(esc).join("<br>")}</address>` : "";
+      const paragraphs = section.paragraphs.map((text) => `<p>${legalText(text)}</p>`).join("");
+      return `<section class="detail-section" aria-labelledby="legal-${index}">
+      <h2 id="legal-${index}">${esc(section.heading)}</h2>
+      ${address}${paragraphs}
+    </section>`;
+    })
+    .join("\n    ");
+  const main = `<section class="page-head legal-head">
+  <div class="wrap">
+    <h1 class="reveal">${esc(page.heading)}</h1>${page.intro ? `\n    <p class="lead reveal">${legalText(page.intro)}</p>` : ""}
+  </div>
+</section>
+<div class="wrap legal">
+  <div class="detail-main">
+    ${sections}
+  </div>
+</div>`;
+  return shell(lang, "legal", where, assets, page.title, page.description, main, (meta) => subpageGraph(meta, page.heading));
+}
+
 function notFound(assets: Assets): string {
   const main = `<section class="page-head center">
   <div class="wrap">
@@ -662,8 +698,11 @@ export function renderSite(assets: Assets, community: readonly CommunityConnecto
       const html = connectorPage(listing, lang, assets, listings);
       write(connectorAt(listing), lang, html, (meta) => connectorMarkdown(meta, listing), connectorTitle(listing, lang), connectorDescription(listing, lang));
     }
+    for (const [where, page] of [[imprintPath, imprintPage(lang, assets.imprint)], [privacyPath, privacyPage(lang, assets.imprint)]] as const) {
+      write(where, lang, legal(lang, where, assets, page), (meta) => legalMarkdown(meta, page), page.title, page.description);
+    }
   }
-  files["sitemap.xml"] = sitemapXml([homeAt, directoryAt, submitPath, ...listings.map(connectorAt)], assets.updated);
+  files["sitemap.xml"] = sitemapXml([homeAt, directoryAt, submitPath, ...listings.map(connectorAt), imprintPath, privacyPath], assets.updated);
   files["robots.txt"] = robotsTxt();
   files["llms.txt"] = llmsTxt(listings);
   files[".well-known/security.txt"] = securityTxt(assets.updated);

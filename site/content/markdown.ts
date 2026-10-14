@@ -1,4 +1,5 @@
 import { CATEGORY, type Listing } from "./directory.js";
+import type { LegalPage } from "./legal.js";
 import { CONNECTOR_TEMPLATE, connectorPath, ISSUE_NEW, pathOf, REPO, repoFile, SITE_ORIGIN, submitPath, type L, type Lang } from "./site.js";
 import { access, actsOf, T } from "./text.js";
 
@@ -205,4 +206,15 @@ export function submitMarkdown(meta: MarkdownMeta): string {
     "",
     ...T.after.map((item, index) => `${index + 1}. **${item.title[lang]}.** ${item.text[lang]}`),
   ]);
+}
+
+/** The imprint or the privacy notice: its paragraphs are Markdown already (site/content/legal.ts). */
+export function legalMarkdown(meta: MarkdownMeta, page: LegalPage): string {
+  const sections = page.sections.flatMap((section) => [
+    `## ${section.heading}`,
+    "",
+    ...(section.address ? [section.address.join("  \n"), ""] : []),
+    ...section.paragraphs.flatMap((text) => [text, ""]),
+  ]);
+  return document(meta, [`# ${page.heading}`, "", ...(page.intro ? [page.intro, ""] : []), ...sections].slice(0, -1));
 }
