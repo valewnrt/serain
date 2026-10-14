@@ -63,6 +63,4 @@ When in doubt, open an issue and ask before you write code.
 
 ## License of contributions
 
-Serain is licensed under the [GNU Affero General Public License v3.0 only](LICENSE). By submitting a contribution you agree that it is licensed under the same license, and you confirm that you have the right to submit it.
-
-The author reserves the option to offer Serain under additional licenses in the future (dual licensing). To keep that possible, the maintainer may ask you to agree, before a larger contribution is merged, that it may also be distributed under such terms. You will always be asked explicitly; nothing is assumed, and you can decline, in which case the contribution simply is not merged.
+Serain is licensed under the [GNU Affero General Public License v3.0 only](LICENSE), and its author also offers it under commercial licenses (dual licensing, see the README). That only works if every contribution may be distributed under both. So every pull request needs the [Contributor License Agreement](CLA.md): you keep the copyright in your contribution and grant the maintainer a license to distribute it under any terms, and in return every merged contribution stays available to everyone under the AGPL in this repository. You agree by ticking the box in the pull request template; a pull request without it is not merged.

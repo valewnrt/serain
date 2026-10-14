@@ -17,4 +17,4 @@ reply seen, or say explicitly that it could not be tested. -->
 - [ ] Style prompt and persona unchanged (or discussed in an issue first); prompt, style or model changes come with a `pnpm eval` comparison
 - [ ] New fixed texts to the owner go through the catalog with English and German (`src/i18n/README.md`); word-based safety checks stay fail closed outside English and German
 - [ ] Commits follow Conventional Commits with an English subject
-- [ ] I agree that this contribution is licensed under AGPL-3.0-only (see CONTRIBUTING.md)
+- [ ] I agree to the Contributor License Agreement ([CLA.md](https://github.com/valewnrt/serain/blob/main/CLA.md)) for this and all my later contributions

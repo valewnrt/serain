@@ -181,4 +181,6 @@ Copyright (C) 2026 Valentin Weinert
 
 Serain ist freie Software: du kannst sie unter den Bedingungen der [GNU Affero General Public License v3.0 only](LICENSE) (`AGPL-3.0-only`), wie von der Free Software Foundation veröffentlicht, weitergeben und ändern. Sie wird ohne jede Gewährleistung verbreitet; Einzelheiten stehen in der Lizenz. Du darfst Serain nutzen, untersuchen, ändern und weitergeben. Betreibst du eine geänderte Fassung als Netzwerkdienst für andere, musst du ihnen den Quellcode unter derselben Lizenz anbieten. Der Sinn: niemand kann Serain als geschlossenen gehosteten Dienst weiterbetreiben.
 
+**Kommerzielle Lizenzen.** Passen die Bedingungen der AGPL nicht zu deinem Vorhaben, etwa wenn du Serain in ein Produkt oder einen Dienst einbauen willst, ohne deinen Quellcode zu veröffentlichen, bietet der Autor kommerzielle Lizenzen an. Kontakt steht im [Impressum](https://serain.si/de/impressum/). Beiträge werden unter dem [Contributor License Agreement](CLA.md) angenommen, das beides möglich hält.
+
 Nicht mit Anthropic oder Apple verbunden.
