@@ -384,7 +384,7 @@ Connections live in the web interface's **Connections** tab and need B1 (integra
 
 **Bank (Enable Banking):** only for your own accounts, non-commercial.
 
-1. Register at [enablebanking.com](https://enablebanking.com) and create an application in the control panel for restricted production use with your own accounts. Redirect URL: `https://serain.example.com/connections/callback` (your `SERAIN_WEB_ORIGIN`). The control panel downloads a private key file named after the app ID.
+1. Register at [enablebanking.com](https://enablebanking.com) and create an application in the control panel for restricted production use with your own accounts. Redirect URL: `https://serain.example.com/connections/callback` (your `SERAIN_WEB_ORIGIN`). The form also asks for a privacy policy URL and a terms of service URL; they are shown only to the account holder, which is you. Use your own privacy notice if you have one, otherwise the README's [legal section](../README.md#legal), and for the terms the README's [disclaimer](../README.md#disclaimer) (the license and its warranty exclusion are the terms Serain comes with). The control panel downloads a private key file named after the app ID.
 2. Import the key, then find your bank's exact name:
 
    ```bash
